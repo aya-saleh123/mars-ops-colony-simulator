@@ -23,4 +23,57 @@ public class MarsColony {
         }
         return sum;
     }
+    public static boolean deductResourceFromFacilities(ResourceType resource,int amount){
+        if(amount>0)
+        {
+            if (amount<= getTotalResourceCount(resource))
+            {
+                findSuitableFacilitiesAndDeduct(resource, amount);
+                return true;
+            }
+            else
+                return false;
+
+        }
+        else
+            throw new IllegalArgumentException("amount must be positive");
+
     }
+
+    
+    
+private static void findSuitableFacilitiesAndDeduct(ResourceType resource, int amount) {
+
+    while (amount > 0) {
+        int maxCount = 0;
+        Facilities maxFacility = null;
+
+        for (Facilities facility : facilities) {
+            if (facility.isOperationalStatus()) {
+                int count = facility.getResourceCount(resource);
+
+                if (count > maxCount) {
+                    maxFacility = facility;
+                    maxCount = count;
+                }
+            }
+        }
+
+        if (maxFacility == null) {
+            return;
+        }
+
+        int deducted = Math.min(amount, maxCount);
+
+        maxFacility.removeResource(resource, deducted);
+
+        System.out.println(
+            deducted + " units of " + resource
+            + " deducted from " + maxFacility.getLocationName()
+        );
+
+        amount -= deducted;
+    }
+}
+
+}
