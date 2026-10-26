@@ -6,30 +6,39 @@ public class Repair extends Mission {
 
   
 
-    public Repair(String name, int missionDuration, Facility facilityToRepair) {
+    public Repair(String name, int missionDuration /*Facility facilityToRepair*/) {
         super(name, missionDuration);
        // this.facilityToRepair = facilityToRepair;
-        setTarget(facilityToRepair);
+       // setTarget(facilityToRepair);
     }
 
 
 
-    @Override
+    
     public int getRequiredAmount(ResourceType type) {
-        return 0;
+         throw new UnsupportedOperationException("TODO");
+    //until writing body
     }
+    
 
 
 
-    @Override
+    
      public  List<Capability> getRequiredCapabilities() {
-        List<Capability> list = new ArrayList<>();
-        list.add(Capability.REPAIR);
-        list.add(Capability.REPAIR);
-        return list;
-    }
+         throw new UnsupportedOperationException("TODO");
+    //until writing body
+     }
 
     @Override
     protected void Completed() {  }
+
+      @Override
+    public String getEnvironmentProblem(EnvironmentCondition env) {
+        if (env == EnvironmentCondition.DUST_STORM) {
+            return "Surface operations are not allowed during a dust storm";
+        }
+      
+    else return null;
+    }
 }
 

@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 public class Research extends Mission {
     
-     public Research(Facility laboratory, int duration) {
+     public Research(/*Facility laboratory*/ int duration) {
         super("Research", duration);
-        setTarget(laboratory);
+        //setTarget(laboratory);
     }
 
     @Override
@@ -16,12 +16,13 @@ public class Research extends Mission {
 
     @Override
     public List<Capability> getRequiredCapabilities() {
-        
+         throw new UnsupportedOperationException("TODO");
+    //until writing body
     }
 
 
 
-     public String EnvironmentProblem(EnvironmentCondition env) {
+     public String getEnvironmentProblem(EnvironmentCondition env) {
      
         if (env == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
             return "Rescue needs communication but it is disrupted";

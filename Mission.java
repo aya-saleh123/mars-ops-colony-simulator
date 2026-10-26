@@ -1,4 +1,4 @@
-import java.security.DrbgParameters.Capability;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public abstract class Mission {
     public abstract List<Capability> getRequiredCapabilities();
     public abstract int getRequiredAmount(ResourceType type);
 
-   public  abstract void getEnvironmentProblem(EnvironmentCondition env);
+   public  abstract String getEnvironmentProblem(EnvironmentCondition env);
     protected void Completed() { }
 
    // public void setTarget(Facility target) {}
