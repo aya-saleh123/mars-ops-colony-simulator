@@ -21,8 +21,6 @@ public abstract class Agent {
         this.skill = skill;
         this.isAvailable = true;
         this.skill = skill;
-        MarsColony.addAgent(this);
-
     }
 
     public String getIdNumber() {

@@ -1,5 +1,6 @@
 package marscolony.personnel;
 
+import marscolony.MarsColony.MarsColony;
 import marscolony.missions.Capability;
 
 public abstract class RoboticUnit extends Agent{
@@ -10,6 +11,7 @@ public abstract class RoboticUnit extends Agent{
         super(idNumber, skill);
         this.batteryLevel = BatteryLevel.HIGH;
         this.isOperational = true;
+        MarsColony.addAgent(this);
     }
 
     public BatteryLevel getBatteryLevel() {

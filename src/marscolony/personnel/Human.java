@@ -1,5 +1,5 @@
 package marscolony.personnel;
-
+import marscolony.MarsColony.MarsColony;
 import marscolony.missions.Capability;
 
 public abstract class Human extends Agent {
@@ -15,6 +15,7 @@ public abstract class Human extends Agent {
         this.name = name;
         this.isHealthy = true; 
         this.fatigueLevel = FatigueLevel.LOW; 
+        MarsColony.addAgent(this);
     }
 
     public String getName() {
