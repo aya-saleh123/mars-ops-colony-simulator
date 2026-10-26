@@ -1,4 +1,4 @@
-package marscolony;
+package marscolony.emergencies;
 
 public abstract class Emergency{
 private String location;

@@ -1,4 +1,4 @@
-package marscolony;
+package marscolony.emergencies;
 
 public class MedicalEmergency extends Emergency{
 
