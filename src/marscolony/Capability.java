@@ -1,0 +1,5 @@
+public enum Capability {
+
+    SCIENCE, SURFACE_TRAVEL, AERIAL, REPAIR, MEDICAL, FIREFIGHTING 
+
+}
