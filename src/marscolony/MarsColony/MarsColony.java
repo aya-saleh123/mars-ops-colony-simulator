@@ -1,13 +1,19 @@
 package marscolony.MarsColony;
 import marscolony.facilities.Facilities;
 import marscolony.resources.*;
+import marscolony.personnel.*;
 import java.util.ArrayList;
 import java.util.List;
 
     
 public class MarsColony {
     private static List<Facilities> facilities = new ArrayList<>();
-    
+    private static List<Agent> agents = new ArrayList<>();
+
+    public static void addAgent(Agent agent) {
+        agents.add(agent);
+    }
+
     public static void addFacility(Facilities facility) {
         facilities.add(facility);
     }

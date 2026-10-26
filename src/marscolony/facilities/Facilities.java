@@ -1,4 +1,5 @@
 package marscolony.facilities;
+import marscolony.MarsColony.MarsColony;
 import marscolony.resources.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public abstract class Facilities {
         resources.add(new Resource(ResourceType.BATTERY_POWER, batteryCount));
         resources.add(new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount));
         resources.add(new Resource(ResourceType.SPARE_PARTS, sparePartsCount));
+        MarsColony.addFacility(this);
     }
 
     private void setCapacity(int capacity) {

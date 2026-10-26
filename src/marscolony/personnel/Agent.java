@@ -1,5 +1,6 @@
 package marscolony.personnel;
 
+import marscolony.MarsColony.MarsColony;
 import marscolony.missions.Capability;
 
 public abstract class Agent {
@@ -20,6 +21,8 @@ public abstract class Agent {
         this.skill = skill;
         this.isAvailable = true;
         this.skill = skill;
+        MarsColony.addAgent(this);
+
     }
 
     public String getIdNumber() {
