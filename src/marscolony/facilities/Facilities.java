@@ -6,14 +6,14 @@ import java.util.List;
 
 public abstract class Facilities {
 
-    private String location;
+    private String locationName;
     private int capacity;
     private boolean operationalStatus;
     // list of all resources
     private List<Resource> resources;
 
     public Facilities(
-            String location,
+            String locationName,
             int capacity,
             boolean operationalStatus,
             int oxygenCount,
@@ -24,7 +24,7 @@ public abstract class Facilities {
             int medicalSuppliesCount,
             int sparePartsCount) {
 
-        this.location = location;
+        this.locationName = locationName;
         setCapacity(capacity);
         this.operationalStatus = operationalStatus;
 
@@ -49,8 +49,8 @@ public abstract class Facilities {
         }
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationName() {
+        return locationName;
     }
 
     public int getCapacity() {
