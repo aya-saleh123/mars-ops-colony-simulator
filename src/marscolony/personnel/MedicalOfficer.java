@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class MedicalOfficer extends Human {
-    public MedicalOfficer(String name, String idNumber) {
-        super(name, idNumber);
+    public MedicalOfficer(String name, String idNumber, Capability skill) {
+        super(name, idNumber, Capability.MEDICAL);
     }
 
     public void respondToEmergency() {

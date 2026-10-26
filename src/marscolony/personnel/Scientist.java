@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class Scientist extends Human {
     public Scientist(String name, String idNumber) {
-        super(name, idNumber);
+        super(name, idNumber, Capability.SCIENCE);
     }
 
     public void conductResearch() {

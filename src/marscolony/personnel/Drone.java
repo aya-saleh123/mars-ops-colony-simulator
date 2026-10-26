@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class Drone extends RoboticUnit {
     public Drone(String idNumber) {
-        super(idNumber);
+        super(idNumber, Capability.AERIAL);
     }
 
     public void performReconnaissance() {

@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class Engineer extends Human {
     public Engineer(String name, String idNumber) {
-        super(name, idNumber);
+        super(name, idNumber, Capability.REPAIR);
     }
 
     public void repairEquipment() {

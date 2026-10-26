@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class RepairRobot extends RoboticUnit {
     public RepairRobot(String idNumber) {
-        super(idNumber);
+        super(idNumber, Capability.REPAIR);
     }
 
     public void repairEquipment() {

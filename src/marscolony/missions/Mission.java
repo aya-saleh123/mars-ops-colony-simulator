@@ -5,7 +5,7 @@ import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
 
 public abstract class Mission {
-    private String failureReason;
+    private String failureReason; //make it enum ya toka
     private String name;
     private int elapsed;
    // private List<agent> agents;

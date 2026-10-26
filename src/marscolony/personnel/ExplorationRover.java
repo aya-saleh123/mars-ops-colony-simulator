@@ -1,8 +1,10 @@
 package marscolony.personnel;
 
+import marscolony.missions.Capability;
+
 public class ExplorationRover extends RoboticUnit {
     public ExplorationRover(String idNumber) {
-        super(idNumber);
+        super(idNumber, Capability.SURFACE_TRAVEL);
     }
 
     public void exploreTerrain() {
