@@ -34,12 +34,12 @@ public class Resource {
         quantity += amount;
     }
 
-    public boolean removeQuantity(int amount) {
-        if (amount < 0 || amount > quantity) {
-            return false;
+    public void removeQuantity(int amount) {
+        if (amount>=0 && amount<= quantity) {
+             quantity -= amount;
         }
+        else
+            throw new IllegalArgumentException("Invalid amount");
 
-        quantity -= amount;
-        return true;
     }
 }

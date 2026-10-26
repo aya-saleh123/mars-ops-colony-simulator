@@ -1,73 +1,107 @@
 package marscolony.facilities;
 import marscolony.resources.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Facilities {
+
     private String location;
     private int capacity;
     private boolean operationalStatus;
-    private Resource oxygen;
-    private Resource water;
-    private Resource food;
-    private Resource fuel;
-    private Resource battery;
-    private Resource medicalSupplies;
-    private Resource spareParts;
-    //Equipement
-    public Facilities(String location, int capacity, boolean operationalStatus, int oxygenCount , int waterCount,
-            int  foodCount , int fuelCount, int batteryCount , int medicalSuppliesCount, int sparePartsCount ) {
-        this.location = location;
-        this.setCapacity(capacity);
-        this.operationalStatus = operationalStatus;
-        oxygen = new Resource(ResourceType.OXYGEN, oxygenCount);
-        water = new Resource(ResourceType.WATER, waterCount);
-        food = new Resource(ResourceType.FOOD, foodCount);
-        fuel = new Resource(ResourceType.FUEL, fuelCount);
-        battery = new Resource(ResourceType.BATTERY_POWER, batteryCount);
-        medicalSupplies = new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount);
-        spareParts = new Resource(ResourceType.SPARE_PARTS, sparePartsCount);
-        MarsColony.addFacility(this);
+    // list of all resources
+    private List<Resource> resources;
 
+    public Facilities(
+            String location,
+            int capacity,
+            boolean operationalStatus,
+            int oxygenCount,
+            int waterCount,
+            int foodCount,
+            int fuelCount,
+            int batteryCount,
+            int medicalSuppliesCount,
+            int sparePartsCount) {
+
+        this.location = location;
+        setCapacity(capacity);
+        this.operationalStatus = operationalStatus;
+
+        resources = new ArrayList<>();
+
+        resources.add(new Resource(ResourceType.OXYGEN, oxygenCount));
+        resources.add(new Resource(ResourceType.WATER, waterCount));
+        resources.add(new Resource(ResourceType.FOOD, foodCount));
+        resources.add(new Resource(ResourceType.FUEL, fuelCount));
+        resources.add(new Resource(ResourceType.BATTERY_POWER, batteryCount));
+        resources.add(new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount));
+        resources.add(new Resource(ResourceType.SPARE_PARTS, sparePartsCount));
     }
-    // we must decide what is capacity(people,resources,.....)
-    private void setCapacity(int capacity)
-    {
-        if(capacity>0)
+
+    private void setCapacity(int capacity) {
+        if (capacity > 0) {
             this.capacity = capacity;
-        else
-            throw new IllegalArgumentException("Capacity must be positive");
+        } else {
+            throw new IllegalArgumentException(
+                "Capacity must be a positive number"
+            );
+        }
     }
+
     public String getLocation() {
         return location;
     }
+
     public int getCapacity() {
         return capacity;
     }
+
     public boolean isOperationalStatus() {
         return operationalStatus;
     }
-    public int getOxygenCount() {
-        return oxygen.getQuantity();
-    }
-    public int getWaterCount() {
-        return water.getQuantity();
-    }
-    public int getFood() {
-        return food.getQuantity();
-    }
-    public int getFuel() {
-        return fuel.getQuantity();
-    }
-    public int getBattery() {
-        return battery.getQuantity();
-    }
-    public int getMedicalSupplies() {
-        return medicalSupplies.getQuantity();
-    }
-    public int getSpareParts() {
-        return spareParts.getQuantity();
+
+    public int getResourceCount(ResourceType type) {
+        for (Resource resource : resources) {
+            if (resource.getType() == type) {
+                return resource.getQuantity();
+            }
+        }
+
+        throw new IllegalArgumentException("Resource type not found: " + type);
     }
 
-    
+    public void removeResource(ResourceType type, int amount) {
+        for (Resource resource : resources) {
+            if (resource.getType() == type) {
+                resource.removeQuantity(amount);
+                return ;
+            }
+        }
+        
+    }
 
-    
+    public void addResource(ResourceType type, int amount) {
+        if((calculateCurrentTotal()+amount)> capacity )
+            throw new IllegalArgumentException("Can't add as it exceeds this facility's max capacity");
+        else
+            for (Resource resource : resources) {
+                if (resource.getType() == type) {
+                    resource.addQuantity(amount);
+                    return ;
+                }
+            }
 
+    }
+
+    public int calculateCurrentTotal()
+    {
+        int sum = 0;
+        for(Resource resource: resources)
+        {
+            sum+= resource.getQuantity();
+        }
+        return sum;
+    }
 }
+
