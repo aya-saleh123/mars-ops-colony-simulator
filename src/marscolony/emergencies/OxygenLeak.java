@@ -13,7 +13,9 @@ public class OxygenLeak extends Emergency {
         this.hab=hab;
     }
 
-    
+     public void respondToEmergency() {
+        
+    }
 
 
 

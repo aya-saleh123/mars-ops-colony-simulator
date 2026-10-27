@@ -12,6 +12,8 @@ public RoverBreakdown(Facilities facility, List<Agent> responders)//Do not forge
     super(facility, responders); 
 }
 
-
+ public void respondToEmergency() {
+        
+    }
 
 }

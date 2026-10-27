@@ -1,6 +1,4 @@
 package marscolony.personnel;
-
-import marscolony.MarsColony.MarsColony;
 import marscolony.missions.Capability;
 
 public abstract class Agent {

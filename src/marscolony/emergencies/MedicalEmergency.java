@@ -11,6 +11,8 @@ public MedicalEmergency(Facilities facility, List<Agent> responders)//do not for
 {
     super(facility, responders);
 }
-
+ public void respondToEmergency() {
+        
+    }
 
 }

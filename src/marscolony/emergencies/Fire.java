@@ -9,6 +9,8 @@ public Fire(Facilities facility, List<Agent> responders)
 {
     super(facility, responders);
 }
-
+ public void respondToEmergency() {
+    
+    }
 
 }

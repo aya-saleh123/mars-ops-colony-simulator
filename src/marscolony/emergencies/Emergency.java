@@ -8,7 +8,7 @@ import marscolony.personnel.Agent;
 public abstract class Emergency {
 
     private Facilities facility;
-    private final List<Agent> responders = new ArrayList<>();
+    private  List<Agent> responders = new ArrayList<>();
     public Emergency( Facilities facility, List<Agent> responders) {
         this.facility = facility;
         this.responders.addAll(responders);
@@ -17,6 +17,8 @@ public abstract class Emergency {
      public String getLocation() { //get the location of the emergency
         return facility.getLocationName();   
     }
+    public abstract void respondToEmergency(); //respond to the emergency
+      
     
 
 }
