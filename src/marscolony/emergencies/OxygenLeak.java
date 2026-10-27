@@ -1,11 +1,15 @@
 package marscolony.emergencies;
 
-public class OxygenLeak extends Emergency{
+import marscolony.facilities.*;
 
-public OxygenLeak(String location)//do not forget agent
-{
-    super(location);
-}
+public class OxygenLeak extends Emergency {
+
+    public OxygenLeak(String location, Habitat hab)//do not forget agent
+    {
+        super(location);
+    }
+
+    
 
 
 

@@ -113,8 +113,9 @@ public abstract class Facilities {
         return sum;
     }
 
-    public void setOperationalStatus(boolean operationalStatus)
+    public void setOperationalStatus(boolean operationalStatus) {
         this.operationalStatus = operationalStatus;
+    }
 }
 
 
