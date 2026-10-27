@@ -1,5 +1,5 @@
 package marscolony.personnel;
-
+import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.Capability;
 
 public class ExplorationRover extends RoboticUnit {
@@ -12,9 +12,12 @@ public class ExplorationRover extends RoboticUnit {
     }
     
     @Override
-    public void assignMission() {
+    public void assignMission(EnvironmentCondition condition) {
         if(isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
             System.out.println("Assigning exploration mission to Exploration Rover " + getIdNumber());
+        } else if (condition == EnvironmentCondition.DUST_STORM) {
+            System.out.println("Exploration Rover " + getIdNumber() + 
+            " is currently unavailable for missions due to a dust storm.");
         } else {
             System.out.println("Exploration Rover " + getIdNumber() + " is currently unavailable for missions.");
         }

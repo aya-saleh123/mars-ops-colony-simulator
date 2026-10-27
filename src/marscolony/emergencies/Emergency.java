@@ -1,16 +1,22 @@
 package marscolony.emergencies;
+import java.util.ArrayList;
+import java.util.List;
+
+import marscolony.facilities.Facilities;
+import marscolony.personnel.Agent;
 
 public abstract class Emergency {
 
-    private String location;
-    //private Responder agent; ~~abstract class Responder parent of personnel ans robots 
-    public Emergency(String location)
-    {   
-        this.location=location;
-        //this.agent=agent;
+    private Facilities facility;
+    private final List<Agent> responders = new ArrayList<>();
+    public Emergency( Facilities facility, List<Agent> responders) {
+        this.facility = facility;
+        this.responders.addAll(responders);
     }
-
-
-
+   
+     public String getLocation() { //get the location of the emergency
+        return facility.getLocationName();   
+    }
+    
 
 }

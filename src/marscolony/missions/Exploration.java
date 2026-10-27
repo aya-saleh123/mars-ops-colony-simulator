@@ -28,8 +28,8 @@ public class Exploration extends Mission {
     public  String getEnvironmentProblem(EnvironmentCondition env) {
         if(env==EnvironmentCondition.DUST_STORM)
             return "Surface operations are not allowed during a dust storm";
-else
-    return null;
+        else
+          return null;
     }
 
     public String getDestination() {

@@ -1,10 +1,13 @@
 package marscolony.emergencies;
+import java.util.List;
+import marscolony.facilities.Facilities;
+import marscolony.personnel.Agent;
 
 public class Fire extends Emergency{
 
-public Fire(String location)//do not forget agent
+public Fire(Facilities facility, List<Agent> responders)
 {
-    super(location);
+    super(facility, responders);
 }
 
 

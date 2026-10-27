@@ -1,6 +1,7 @@
 package marscolony.personnel;
 
 import marscolony.MarsColony.MarsColony;
+import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.Capability;
 
 public abstract class RoboticUnit extends Agent{
@@ -39,5 +40,5 @@ public abstract class RoboticUnit extends Agent{
         this.isOperational = operational;
     }
 
-    public abstract void assignMission();
+    public abstract void assignMission(EnvironmentCondition condition);
 }

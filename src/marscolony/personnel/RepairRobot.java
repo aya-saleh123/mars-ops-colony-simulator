@@ -1,5 +1,6 @@
 package marscolony.personnel;
 
+import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.Capability;
 
 public class RepairRobot extends RoboticUnit {
@@ -12,7 +13,7 @@ public class RepairRobot extends RoboticUnit {
     }
 
     @Override
-    public void assignMission() {
+    public void assignMission(EnvironmentCondition condition) {
         if (isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
             System.out.println("Assigning repair mission to Repair Robot " + getIdNumber());
         } else {
