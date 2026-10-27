@@ -39,13 +39,27 @@ public abstract class Mission {
       
     
 
-    public void advanceTime() {}
+    public void advanceTime() {
+        if(this.state == MissionState.IN_PROGRESS)
+        {
+            elapsed++;
+            if(elapsed>=missionDuration)
+            {
+                this.state = MissionState.COMPLETED;
+                System.out.println("Mission Completed Successfully!!");
+            }
+        }
+        else
+            return ;
+    }
 
    // public boolean isFinished() {}
    // public String getName() { }
    // public int getDuration() {}
    // public int getElapsed() { }
-    //public MissionState getMissionState() {  }
+    public MissionState getMissionState() {
+        return state;
+    }
    // public String getFailureReason() {  }
    // public List<Agent> getAgents() {  }
    // public Facility getTarget() {  }

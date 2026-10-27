@@ -2,11 +2,16 @@ package marscolony.MarsColony;
 import marscolony.facilities.Facilities;
 import marscolony.resources.*;
 import marscolony.personnel.*;
+import marscolony.missions.*;
 import java.util.ArrayList;
 import java.util.List;
 
     
 public class MarsColony {
+    //Related to stimulation part
+    private static int colonyTime = 0;
+    private static Mission activeMission = null;
+
     private static List<Facilities> facilities = new ArrayList<>();
     private static List<Agent> agents = new ArrayList<>();
 
@@ -79,6 +84,28 @@ private static void findSuitableFacilitiesAndDeduct(ResourceType resource, int a
         );
 
         amount -= deducted;
+    }
+}
+
+public static void advanceTime(int time)
+{
+    if(time<=0)
+        throw new IllegalArgumentException("Time must be positive");
+    else
+    {
+        for(int i=0;i<time;i++)
+        {
+            colonyTime++;
+            if(activeMission!= null)
+            {
+                activeMission.advanceTime();
+                if (activeMission.getMissionState() == MissionState.COMPLETED) {
+                    activeMission = null;
+    }
+            }
+
+
+        }
     }
 }
 
