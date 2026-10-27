@@ -16,7 +16,6 @@ public abstract class Facilities {
     public Facilities(
             String locationName,
             int capacity,
-            boolean operationalStatus,
             int oxygenCount,
             int waterCount,
             int foodCount,
@@ -27,8 +26,8 @@ public abstract class Facilities {
 
         this.locationName = locationName;
         setCapacity(capacity);
-        this.operationalStatus = operationalStatus;
-
+        this.operationalStatus = true;
+        setResourcescount(oxygenCount,waterCount,foodCount,fuelCount,batteryCount,medicalSuppliesCount,sparePartsCount);
         resources = new ArrayList<>();
 
         resources.add(new Resource(ResourceType.OXYGEN, oxygenCount));
@@ -39,6 +38,14 @@ public abstract class Facilities {
         resources.add(new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount));
         resources.add(new Resource(ResourceType.SPARE_PARTS, sparePartsCount));
         MarsColony.addFacility(this);
+    }
+
+    private void setResourcescount(int oxygenCount,int waterCount,int foodCount,int fuelCount,int batteryCount,int medicalSuppliesCount,int sparePartsCount)
+    {
+        if(oxygenCount<0 || waterCount<0 || foodCount<0 || fuelCount<0 || batteryCount<0 || medicalSuppliesCount<0 || sparePartsCount<0)
+            throw new IllegalArgumentException("Resources count can't be negative");
+        if((oxygenCount+waterCount+foodCount+fuelCount+batteryCount+medicalSuppliesCount+sparePartsCount)>capacity)
+            throw new IllegalArgumentException("Total of resources can't exceed the set capacity");
     }
 
     private void setCapacity(int capacity) {
@@ -105,5 +112,9 @@ public abstract class Facilities {
         }
         return sum;
     }
+
+    public void setOperationalStatus(boolean operationalStatus)
+        this.operationalStatus = operationalStatus;
 }
+
 
