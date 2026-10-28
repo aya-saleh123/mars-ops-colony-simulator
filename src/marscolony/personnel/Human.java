@@ -47,6 +47,31 @@ public abstract class Human extends Agent {
         this.fatigueLevel = fatigueLevel;
     }
 
+    public void incFatigueLevel() {
+        if (fatigueLevel == FatigueLevel.LOW) {
+            fatigueLevel = FatigueLevel.MEDIUM;
+        } else if (fatigueLevel == FatigueLevel.MEDIUM) {
+            fatigueLevel = FatigueLevel.HIGH;
+        }
+    }
+
+    public void rest() {
+        if (fatigueLevel == FatigueLevel.LOW) {
+            System.out.println("Human " + getName() + " is already at low fatigue level. No need to rest.");
+            return;
+        }
+        System.out.println("Human " + getName() + " is resting to recover from fatigue.");
+        decFatigueLevel();
+    }
+    
+    public void decFatigueLevel() {
+        if (fatigueLevel == FatigueLevel.HIGH) {
+            fatigueLevel = FatigueLevel.MEDIUM;
+        } else if (fatigueLevel == FatigueLevel.MEDIUM) {
+            fatigueLevel = FatigueLevel.LOW;
+        }
+    }
+
     public abstract void assignMission();
 
     @Override 

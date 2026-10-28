@@ -1,5 +1,6 @@
 package marscolony.MarsColony;
 
+import marscolony.conditions.EnvironmentCondition;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
 import marscolony.resources.*;
@@ -11,7 +12,7 @@ import java.util.List;
 public class MarsColony {
     // Related to stimulation part
     private static int colonyTime = 0;
-
+    private static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
     private static List<Mission> missions;
     private static Mission activeMission = null;
 
@@ -21,6 +22,10 @@ public class MarsColony {
 
     public static void addHuman(Human human) {
         crewMembers.add(human);
+    }
+
+    public static EnvironmentCondition getEnvCondition() {
+        return currentCondition;
     }
 
     public static void addRoboticUnit(RoboticUnit roboticUnit) {
