@@ -20,4 +20,8 @@ public class Engineer extends Human {
             System.out.println("Engineer " + getName() + " is currently unavailable for missions.");
         }
     }
+
+    public void repairOxygenLeak() {
+        
+    }
 }

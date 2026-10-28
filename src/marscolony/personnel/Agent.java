@@ -62,8 +62,6 @@ public abstract class Agent {
         this.skill = skill;
     }
 
-    public boolean canPerform(Mission m){
-        return m.getRequiredCapabilities().contains(getSkill());
-    }
-
+    public abstract boolean canPerform(Capability requiredSkill);
+    public abstract void justFinished();
 }
