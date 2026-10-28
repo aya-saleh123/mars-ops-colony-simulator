@@ -4,6 +4,7 @@ import java.util.List;
 import marscolony.facilities.*;
 import marscolony.personnel.*;
 import marscolony.resources.ResourceType;
+import marscolony.Equipment.*;
 
 public class Fire extends Emergency{
     boolean unresolvedFire=false;
@@ -16,6 +17,8 @@ public Fire(Laboratory lab, List<Agent> responders)
     lab.removeResource(ResourceType.OXYGEN, 50);
    medicalEmergency = new MedicalEmergency(lab, responders, patients);
     unresolvedFire=false;
+    damageEquipment(lab);
+
 
 }
  public void respondToEmergency() {
@@ -51,6 +54,11 @@ public Fire(Laboratory lab, List<Agent> responders)
     
  }
 
+  private void damageEquipment(Laboratory lab) {
+        for (Equipment equipment : lab.getEquipments()) {
+            equipment.damageEquipment();
+        }
+    }
 
 
 }

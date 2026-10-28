@@ -1,10 +1,14 @@
 package marscolony.personnel;
+import marscolony.Equipment.Equipment;
+import marscolony.Equipment.EquipmentType;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.Capability;
 
 public class ExplorationRover extends RoboticUnit {
+    private Equipment equipment;
     public ExplorationRover(String idNumber) {
         super(idNumber, Capability.SURFACE_TRAVEL);
+        equipment = new Equipment(EquipmentType.EXPLORATION_EQUIPMENT);
     }
 
     public void exploreTerrain() {

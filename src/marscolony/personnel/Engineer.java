@@ -1,5 +1,6 @@
 package marscolony.personnel;
 
+import marscolony.Equipment.Equipment;
 import marscolony.missions.Capability;
 
 public class Engineer extends Human {
@@ -7,8 +8,8 @@ public class Engineer extends Human {
         super(name, idNumber, Capability.REPAIR);
     }
 
-    public void repairEquipment() {
-        // Implementation for repairing equipment
+    public void repairEquipment(Equipment equipment) {//repair a single equipement and we wan't facility fe yom men el atam
+        equipment.fixEquipment();
     }
     
     @Override 

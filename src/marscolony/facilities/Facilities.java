@@ -1,4 +1,6 @@
 package marscolony.facilities;
+import marscolony.Equipment.Equipment;
+import marscolony.Equipment.EquipmentType;
 import marscolony.MarsColony.MarsColony;
 import marscolony.resources.*;
 
@@ -12,6 +14,9 @@ public abstract class Facilities {
     private boolean operationalStatus;
     // list of all resources
     private List<Resource> resources;
+    //list of equipement
+    private List<Equipment> equipments;
+
 
     public Facilities(
             String locationName,
@@ -37,6 +42,10 @@ public abstract class Facilities {
         resources.add(new Resource(ResourceType.BATTERY_POWER, batteryCount));
         resources.add(new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount));
         resources.add(new Resource(ResourceType.SPARE_PARTS, sparePartsCount));
+        equipments.add(new Equipment(EquipmentType.SCIENTIFIC_EQUIPMENT));
+        equipments.add(new Equipment(EquipmentType.EXPLORATION_EQUIPMENT));
+
+
         MarsColony.addFacility(this);
     }
 
@@ -116,6 +125,10 @@ public abstract class Facilities {
     public void setOperationalStatus(boolean operationalStatus) {
         this.operationalStatus = operationalStatus;
     }
+
+    public List<Equipment> getEquipments() {
+    return equipments;
+}
 }
 
 
