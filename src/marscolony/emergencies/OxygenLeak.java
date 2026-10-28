@@ -3,7 +3,7 @@ package marscolony.emergencies;
 import java.util.List;
 
 import marscolony.facilities.*;
-import marscolony.personnel.Agent;
+import marscolony.personnel.*;
 
 public class OxygenLeak extends Emergency {
     Habitat hab;

@@ -13,11 +13,18 @@ public abstract class Emergency {
         this.facility = facility;
         this.responders.addAll(responders);
     }
-   
+    public Facilities getFacility() {
+        return facility;
+    }
+    public List<Agent> getResponders() {
+        return responders;
+    }
      public String getLocation() { //get the location of the emergency
         return facility.getLocationName();   
     }
     public abstract void respondToEmergency(); //respond to the emergency
+    
+
       
     
 
