@@ -1,37 +1,44 @@
 package marscolony.missions;
 import java.util.List;
-import marscolony.resources.*;
-import marscolony.conditions.*;
+import java.util.ArrayList;
+import marscolony.resources.ResourceType;
+import marscolony.conditions.EnvironmentCondition;
+import marscolony.facilities.Facilities;
+
 
 
 public class Repair extends Mission {
-    //private final Facility facilityToRepair;
+    private final Facilities facilityToRepair;
 
-    public Repair(String name, int missionDuration /*Facility facilityToRepair*/) {
+    public Repair(String name, int missionDuration ,Facilities facilityToRepair) {
         super(name, missionDuration);
-       // this.facilityToRepair = facilityToRepair;
-       // setTarget(facilityToRepair);
+       this.facilityToRepair = facilityToRepair;
+        setTarget(facilityToRepair);
     }
-
-
 
     
     public int getRequiredAmount(ResourceType type) {
-         throw new UnsupportedOperationException("TODO");
-    //until writing body
+         if(type==ResourceType.SPARE_PARTS)
+            return 2;
+        if(type==ResourceType.BATTERY_POWER)
+            return 5;
+         else
+            return 0;
+
     }
     
-
-
-
-    
      public  List<Capability> getRequiredCapabilities() {
-         throw new UnsupportedOperationException("TODO");
-    //until writing body
+         List<Capability> cap=new ArrayList<>();
+         cap.add(Capability.REPAIR);
+         cap.add(Capability.REPAIR);
+         return cap;
      }
 
     @Override
-    protected void Completed() {  }
+    protected void Completed() { 
+        facilityToRepair.setOperationalStatus(true);
+        System.out.println(facilityToRepair.getLocationName()+" is repaired");
+     }
 
       @Override
     public String getEnvironmentProblem(EnvironmentCondition env) {
