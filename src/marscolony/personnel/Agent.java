@@ -1,5 +1,6 @@
 package marscolony.personnel;
 import marscolony.missions.Capability;
+import marscolony.missions.Mission;
 
 public abstract class Agent {
     private String idNumber;
@@ -60,4 +61,9 @@ public abstract class Agent {
         }
         this.skill = skill;
     }
+
+    public boolean canPerform(Mission m){
+        return m.getRequiredCapabilities().contains(getSkill());
+    }
+
 }
