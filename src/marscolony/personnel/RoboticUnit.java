@@ -41,4 +41,19 @@ public abstract class RoboticUnit extends Agent{
     }
 
     public abstract void assignMission(EnvironmentCondition condition);
+
+    @Override 
+    public boolean canPerform(Capability requiredSkill) {
+        return isAvailable() && getSkill() == requiredSkill && isOperational() && getBatteryLevel() != BatteryLevel.LOW;
+    }
+
+    @Override 
+    public void justFinished() {
+        setAvailable(true);
+        if (batteryLevel == BatteryLevel.HIGH) {
+            setBatteryLevel(BatteryLevel.MEDIUM);
+        } else if (batteryLevel == BatteryLevel.MEDIUM) {
+            setBatteryLevel(BatteryLevel.LOW);
+        }
+    }
 }

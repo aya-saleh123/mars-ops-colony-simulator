@@ -49,4 +49,19 @@ public abstract class Human extends Agent {
 
     public abstract void assignMission();
 
+    @Override 
+    public boolean canPerform(Capability requiredSkill) {
+        return isAvailable() && getSkill() == requiredSkill && isHealthy() && getFatigueLevel() != FatigueLevel.HIGH;
+    }
+
+    @Override
+    public void justFinished() {
+        setAvailable(true);
+        if (fatigueLevel == FatigueLevel.LOW) {
+            setFatigueLevel(FatigueLevel.MEDIUM);
+        } else if (fatigueLevel == FatigueLevel.MEDIUM) {
+            setFatigueLevel(FatigueLevel.HIGH);
+        }
+    }
+
 }

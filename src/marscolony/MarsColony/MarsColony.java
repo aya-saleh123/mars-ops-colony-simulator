@@ -126,6 +126,7 @@ public boolean startMission(Mission mission)
     }
     else
     {
+        // check available agents
         if()
     }
 }
