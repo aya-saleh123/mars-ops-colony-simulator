@@ -1,5 +1,6 @@
 package marscolony.MarsColony;
 import marscolony.facilities.Facilities;
+import marscolony.missions.Mission;
 import marscolony.resources.*;
 import marscolony.personnel.*;
 import marscolony.missions.*;
@@ -99,7 +100,7 @@ public static void advanceTime(int time)
             if(activeMission!= null)
             {
                 activeMission.advanceTime();
-                if (activeMission.getMissionState() == MissionState.COMPLETED) {
+                if (activeMission.getState() == MissionState.COMPLETED) {
                     activeMission = null;
     }
             }
