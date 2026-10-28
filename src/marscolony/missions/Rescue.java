@@ -1,29 +1,35 @@
 package marscolony.missions;
-import marscolony.resources.*;
-import marscolony.conditions.*;
+import marscolony.resources.ResourceType;
+import marscolony.conditions.EnvironmentCondition;
+import marscolony.personnel.Agent;
+import marscolony.facilities.Facilities;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Rescue extends Mission{
-   // private Agent rescuedAgent;
-   // private Facility targetLocation;
+    private Agent rescuedAgent;
+    private Facilities targetLocation;
 
-    public Rescue(String name, int missionDuration /*  Agent rescuedAgent, Facility targetLocation*/) {
+    public Rescue(String name, int missionDuration , Agent rescuedAgent, Facilities targetLocation) {
         super(name, missionDuration);
-    //    this.rescuedAgent = rescuedAgent;
-     //   this.targetLocation = targetLocation;
-           // setTarget(targetLocation);
+        this.rescuedAgent = rescuedAgent;
+        this.targetLocation = targetLocation;
+        setTarget(targetLocation);
     }
     
     @Override
     public int getRequiredAmount(ResourceType type) {
-         throw new UnsupportedOperationException("TODO");
-    //until writing body
+         if(type==ResourceType.FUEL)
+            return 10;
+        else return 0;
     }
 
     @Override
     public List<Capability> getRequiredCapabilities() {
-         throw new UnsupportedOperationException("TODO");
-    //until writing body
+     List<Capability> capRescue=new ArrayList<>();
+         capRescue.add(Capability.SURFACE_TRAVEL);
+         capRescue.add(Capability.MEDICAL);
+         return capRescue;
     }
 
      @Override
@@ -39,7 +45,11 @@ public class Rescue extends Mission{
     
     }
       @Override
-    protected void Completed() { }
+    protected void Completed() {
+      rescuedAgent.setLocation(targetLocation.getLocationName());
+      System.out.println(rescuedAgent.getIdNumber()+" rescued and brought to "+targetLocation.getLocationName());
+
+     }
 
 
 }

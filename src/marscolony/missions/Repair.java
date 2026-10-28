@@ -28,10 +28,10 @@ public class Repair extends Mission {
     }
     
      public  List<Capability> getRequiredCapabilities() {
-         List<Capability> cap=new ArrayList<>();
-         cap.add(Capability.REPAIR);
-         cap.add(Capability.REPAIR);
-         return cap;
+         List<Capability> capRepair=new ArrayList<>();
+         capRepair.add(Capability.REPAIR);
+         capRepair.add(Capability.REPAIR);
+         return capRepair;
      }
 
     @Override
