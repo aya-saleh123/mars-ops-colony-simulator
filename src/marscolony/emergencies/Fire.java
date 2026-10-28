@@ -7,6 +7,7 @@ import marscolony.personnel.*;
 import marscolony.resources.ResourceType;
 import marscolony.Equipment.*;
 import marscolony.missions.*;
+import marscolony.MarsColony.MarsColony;
 
 public class Fire extends Emergency {
     EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
@@ -15,19 +16,19 @@ public class Fire extends Emergency {
     boolean availableFirefighterFound = false;
     boolean availableMedicalOfficerFound = false;
 
-    public Fire(Laboratory lab, List<Agent> responders) {
-        super(lab, responders);
+    public Fire(Laboratory lab) {
+        super(lab);
         lab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
         int lost = lab.removeUpTo(ResourceType.OXYGEN, 50);
         System.out.println("Fire consumed " + lost + " oxygen in " + lab.getLocationName());
-        medicalEmergency = new MedicalEmergency(lab, responders, patients);
+        medicalEmergency = new MedicalEmergency(lab, patients);
         damageEquipment(lab);
 
     }
 
     @Override //Aya: this is an added method, please integrate it into this class
     public void findResponders() {
-        for (Agent a : getResponders()) {
+        for (Agent a : MarsColony.getAgents()) {
             if (a.getClass() == Firefighter.class) {
                 if (((Firefighter) a).canPerform(Capability.FIREFIGHTING)) {
                     this.addResponder(a);

@@ -6,6 +6,7 @@ import marscolony.facilities.FacilityStatus;
 import marscolony.personnel.*;
 import marscolony.resources.ResourceType;
 import marscolony.missions.*;
+import marscolony.MarsColony.MarsColony;
 
 public class MedicalEmergency extends Emergency {
    List<Human> patients;
@@ -14,14 +15,14 @@ public class MedicalEmergency extends Emergency {
    boolean availableMedicalSuppliesFound = false;
    EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
 
-   public MedicalEmergency(Facilities facility, List<Agent> responders, List<Human> patients) {
-      super(facility, responders);
+   public MedicalEmergency(Facilities facility, List<Human> patients) {
+      super(facility);
       this.patients = patients;
    }
 
    @Override 
     public void findResponders() {
-        for (Agent a : getResponders()) {
+        for (Agent a : MarsColony.getAgents()) {
             if (a.getClass() == MedicalOfficer.class) {
                 if (((MedicalOfficer) a).canPerform(Capability.MEDICAL)) {
                     this.addResponder(a);

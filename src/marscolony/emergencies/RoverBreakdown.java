@@ -7,20 +7,23 @@ import marscolony.personnel.Agent;
 import marscolony.personnel.Engineer;
 import marscolony.personnel.RepairRobot;
 import marscolony.missions.Capability;
+import marscolony.personnel.*;
+import marscolony.MarsColony.MarsColony;
 
 public class RoverBreakdown extends Emergency {
     EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
     Boolean availableEngineerFound = false;
     Boolean availableRepairRobotFound = false;
+    ExplorationRover brokenRover;
 
-    public RoverBreakdown(Facilities facility, List<Agent> responders)// Do not forget agent
+    public RoverBreakdown(Facilities facility)
     {
-        super(facility, responders);
+        super(facility);
     }
 
     @Override 
     public void findResponders() {
-        for (Agent a : getResponders()) {
+        for (Agent a : MarsColony.getAgents()) {
             if (a.getClass() == Engineer.class) {
                 if (((Engineer) a).canPerform(Capability.REPAIR)) {
                     this.addResponder(a);
@@ -47,7 +50,7 @@ public class RoverBreakdown extends Emergency {
     }
 
     public void respondToEmergency() {
-
+        
     }
 
 }

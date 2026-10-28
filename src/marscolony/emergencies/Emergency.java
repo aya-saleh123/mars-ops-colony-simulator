@@ -7,13 +7,11 @@ import marscolony.facilities.Facilities;
 import marscolony.personnel.Agent;
 
 public abstract class Emergency {
-
     private Facilities facility;
     private List<Agent> responders = new ArrayList<>();
 
-    public Emergency(Facilities facility, List<Agent> responders) {
+    public Emergency(Facilities facility) {
         this.facility = facility;
-        this.responders.addAll(responders);
     }
 
     public Facilities getFacility() {

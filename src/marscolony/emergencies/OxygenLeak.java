@@ -7,20 +7,21 @@ import marscolony.personnel.*;
 import marscolony.resources.*;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.*;
+import marscolony.MarsColony.MarsColony;
 
 public class OxygenLeak extends Emergency {
     EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
     Boolean availableEngineerFound = false;
     Boolean availableRepairRobotFound = false;
 
-    public OxygenLeak(Facilities facility, List<Agent> responders)// do not forget agent
+    public OxygenLeak(Facilities facility)
     {
-        super(facility, responders);
+        super(facility);
     }
 
     @Override 
     public void findResponders() {
-        for (Agent a : getResponders()) {
+        for (Agent a : MarsColony.getAgents()) {
             if (a.getClass() == Engineer.class) {
                 if (((Engineer) a).canPerform(Capability.REPAIR)) {
                     this.addResponder(a);
