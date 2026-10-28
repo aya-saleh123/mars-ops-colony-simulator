@@ -13,15 +13,16 @@ public class Fire extends Emergency{
 public Fire(Laboratory lab, List<Agent> responders)
 {
     super(lab, responders);
-    lab.setOperationalStatus(false);
-    lab.removeResource(ResourceType.OXYGEN, 50);
-   medicalEmergency = new MedicalEmergency(lab, responders, patients);
+    lab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
+    int lost = lab.removeUpTo(ResourceType.OXYGEN, 50);
+    System.out.println("Fire consumed " + lost + " oxygen in " + lab.getLocationName());
+    medicalEmergency = new MedicalEmergency(lab, responders, patients);
     unresolvedFire=false;
     damageEquipment(lab);
 
 
 }
- public void respondToEmergency() {
+ public void respondToEmergency() { 
     boolean availableFirefighterFound = false;
     boolean availableMedicalOfficerFound = false;
     medicalEmergency.respondToEmergency();

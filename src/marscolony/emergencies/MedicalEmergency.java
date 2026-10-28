@@ -1,6 +1,7 @@
 package marscolony.emergencies;
 import java.util.List;
 import marscolony.facilities.Facilities;
+import marscolony.facilities.FacilityStatus;
 import marscolony.personnel.*;
 
 public class MedicalEmergency extends Emergency{
@@ -19,7 +20,7 @@ public MedicalEmergency(Facilities facility, List<Agent> responders, List<Human>
     for(Agent a: getResponders())
    {
     
-    if(a.isAvailable() && a.getClass()== MedicalOfficer.class && getFacility().isOperationalStatus() /*&& medicalsupplies available */)
+    if(a.isAvailable() && a.getClass()== MedicalOfficer.class && getFacility().getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL /*&& medicalsupplies available */)
     {
        availableMedicalOfficerFound = true;
        availableOperationalFacilityFound = true;

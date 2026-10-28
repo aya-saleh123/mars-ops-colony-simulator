@@ -11,7 +11,7 @@ public abstract class Facilities {
 
     private String locationName;
     private int capacity;
-    private boolean operationalStatus;
+    private FacilityStatus operationalStatus;
     // list of all resources
     private List<Resource> resources;
     //list of equipement
@@ -31,10 +31,10 @@ public abstract class Facilities {
 
         this.locationName = locationName;
         setCapacity(capacity);
-        this.operationalStatus = true;
+        this.operationalStatus = FacilityStatus.OPERATIONAL;
         setResourcescount(oxygenCount,waterCount,foodCount,fuelCount,batteryCount,medicalSuppliesCount,sparePartsCount);
         resources = new ArrayList<>();
-
+        
         resources.add(new Resource(ResourceType.OXYGEN, oxygenCount));
         resources.add(new Resource(ResourceType.WATER, waterCount));
         resources.add(new Resource(ResourceType.FOOD, foodCount));
@@ -42,6 +42,7 @@ public abstract class Facilities {
         resources.add(new Resource(ResourceType.BATTERY_POWER, batteryCount));
         resources.add(new Resource(ResourceType.MEDICAL_SUPPLIES, medicalSuppliesCount));
         resources.add(new Resource(ResourceType.SPARE_PARTS, sparePartsCount));
+        equipments = new ArrayList<>();
         equipments.add(new Equipment(EquipmentType.SCIENTIFIC_EQUIPMENT));
         equipments.add(new Equipment(EquipmentType.EXPLORATION_EQUIPMENT));
 
@@ -75,7 +76,7 @@ public abstract class Facilities {
         return capacity;
     }
 
-    public boolean isOperationalStatus() {
+    public FacilityStatus getFacilityOperationalStatus() {
         return operationalStatus;
     }
 
@@ -122,13 +123,37 @@ public abstract class Facilities {
         return sum;
     }
 
-    public void setOperationalStatus(boolean operationalStatus) {
+    public void setOperationalStatus(FacilityStatus operationalStatus) {
         this.operationalStatus = operationalStatus;
     }
 
     public List<Equipment> getEquipments() {
     return equipments;
 }
+
+public  void destroyFacility()
+{
+    if (operationalStatus == FacilityStatus.DESTROYED)
+        System.out.println(getLocationName() +" is already destroyed");
+    else
+        operationalStatus = FacilityStatus.DESTROYED;
+}
+
+public void repairFacility()
+{
+    if (operationalStatus == FacilityStatus.OPERATIONAL)
+        System.out.println(getLocationName() +" is already operational");
+    else
+        operationalStatus = FacilityStatus.OPERATIONAL;
+}
+
+// Removes up to 'amount' and returns how much was actually removed.
+public int removeUpTo(ResourceType type, int amount) {
+    int removed = Math.min(amount, getResourceCount(type));
+    removeResource(type, removed);
+    return removed;
+}
+
 }
 
 

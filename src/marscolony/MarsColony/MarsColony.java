@@ -1,6 +1,6 @@
 package marscolony.MarsColony;
 import marscolony.facilities.Facilities;
-import marscolony.missions.Mission;
+import marscolony.facilities.FacilityStatus;
 import marscolony.resources.*;
 import marscolony.personnel.*;
 import marscolony.missions.*;
@@ -29,7 +29,7 @@ public class MarsColony {
         int sum = 0;
         for (Facilities facility : facilities)
         {
-            if(!facility.isOperationalStatus()) //IDK the destroyed for now
+            if(facility.getFacilityOperationalStatus() == FacilityStatus.DESTROYED || facility.getFacilityOperationalStatus() == FacilityStatus.UNAVAILABLE )
                 continue;
             sum += facility.getResourceCount(resource);
         }
@@ -61,7 +61,7 @@ private static void findSuitableFacilitiesAndDeduct(ResourceType resource, int a
         Facilities maxFacility = null;
 
         for (Facilities facility : facilities) {
-            if (facility.isOperationalStatus()) {
+            if (facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL) {
                 int count = facility.getResourceCount(resource);
 
                 if (count > maxCount) {

@@ -8,7 +8,7 @@ public class Engineer extends Human {
         super(name, idNumber, Capability.REPAIR);
     }
 
-    public void repairEquipment(Equipment equipment) {//repair a single equipement and we wan't facility fe yom men el atam
+    public void repairEquipment(Equipment equipment) {//repair a single equipement and we wan't facility fe yom men el ayam
         equipment.fixEquipment();
     }
     

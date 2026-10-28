@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import marscolony.resources.ResourceType;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.facilities.Facilities;
+import marscolony.facilities.FacilityStatus;
 
 
 
@@ -36,7 +37,7 @@ public class Repair extends Mission {
 
     @Override
     protected void Completed() { 
-        facilityToRepair.setOperationalStatus(true);
+        facilityToRepair.repairFacility();;
         System.out.println(facilityToRepair.getLocationName()+" is repaired");
      }
 
