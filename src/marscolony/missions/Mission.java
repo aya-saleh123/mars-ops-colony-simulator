@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
 import marscolony.personnel.Agent;
-import marscolony.facilities.*;;
+import marscolony.facilities.*;
 
 public abstract class Mission {
     private FailureReason reasonOfFailure;
@@ -13,7 +13,7 @@ public abstract class Mission {
     private int elapsed;
     private List<Agent> agents;
     private Facilities target;
-    private int missionDuration;
+    private int  missionDuration;
     private MissionState state;
 
     public Mission(String name, int missionDuration) {

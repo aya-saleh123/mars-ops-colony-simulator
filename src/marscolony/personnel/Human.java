@@ -15,7 +15,7 @@ public abstract class Human extends Agent {
         this.name = name;
         this.isHealthy = true; 
         this.fatigueLevel = FatigueLevel.LOW; 
-        MarsColony.addAgent(this);
+        MarsColony.addHuman(this);
     }
 
     public String getName() {
