@@ -12,7 +12,7 @@ public class MarsColony {
     // Related to stimulation part
     private static int colonyTime = 0;
 
-    private static List<Mission> missions ;
+    private static List<Mission> missions;
     private static Mission activeMission = null;
 
     private static List<Facilities> facilities = new ArrayList<>();
@@ -25,6 +25,14 @@ public class MarsColony {
 
     public static void addRoboticUnit(RoboticUnit roboticUnit) {
         robots.add(roboticUnit);
+    }
+
+    public static List<Human> getHumans() {
+        return crewMembers;
+    }
+
+    public static List<RoboticUnit> getRobots() {
+        return robots;
     }
 
     public static void addFacility(Facilities facility) {
@@ -102,37 +110,24 @@ public class MarsColony {
                     }
                 }
 
-
+            }
         }
     }
-}
-// handling on mission at a time
+
+    // handling on mission at a time
 public boolean startMission(Mission mission)
 {
-    if(activeMission!=null)
-    {
-        mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
+        if(activeMission!=null)
+        {
+            mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
+            return false;
+        }
+        else
+        {
+            // check available agents
+        }
         return false;
     }
-    else
-    {
-        // check available agents
-        if()
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void colonyResourcesStatusReport() {
         System.out.println("Colony Resources Status Report");

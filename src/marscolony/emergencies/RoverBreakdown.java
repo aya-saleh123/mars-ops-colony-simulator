@@ -23,7 +23,7 @@ public class RoverBreakdown extends Emergency {
 
     @Override 
     public void findResponders() {
-        for (Agent a : MarsColony.getAgents()) {
+        for (Agent a : MarsColony.getHumans()) {
             if (a.getClass() == Engineer.class) {
                 if (((Engineer) a).canPerform(Capability.REPAIR)) {
                     this.addResponder(a);
@@ -32,6 +32,8 @@ public class RoverBreakdown extends Emergency {
                     break;
                 }
             }
+        }
+        for (Agent a : MarsColony.getRobots()) {
             if (a.getClass() == RepairRobot.class) {
                 if (((RepairRobot) a).canPerform(Capability.REPAIR)) {
                     this.addResponder(a);

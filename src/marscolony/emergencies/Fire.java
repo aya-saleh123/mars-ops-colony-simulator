@@ -28,7 +28,7 @@ public class Fire extends Emergency {
 
     @Override //Aya: this is an added method, please integrate it into this class
     public void findResponders() {
-        for (Agent a : MarsColony.getAgents()) {
+        for (Agent a : MarsColony.getHumans()) {
             if (a.getClass() == Firefighter.class) {
                 if (((Firefighter) a).canPerform(Capability.FIREFIGHTING)) {
                     this.addResponder(a);

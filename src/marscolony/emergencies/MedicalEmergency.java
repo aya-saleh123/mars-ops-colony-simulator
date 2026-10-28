@@ -22,7 +22,7 @@ public class MedicalEmergency extends Emergency {
 
    @Override 
     public void findResponders() {
-        for (Agent a : MarsColony.getAgents()) {
+        for (Agent a : MarsColony.getHumans()) {
             if (a.getClass() == MedicalOfficer.class) {
                 if (((MedicalOfficer) a).canPerform(Capability.MEDICAL)) {
                     this.addResponder(a);
