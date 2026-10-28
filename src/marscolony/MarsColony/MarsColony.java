@@ -110,4 +110,17 @@ public static void advanceTime(int time)
     }
 }
 
+public void colonyResourcesStatusReport()
+{
+    System.out.println("Colony Resources Status Report");
+    System.out.println("Oxygen : " + getTotalResourceCount(ResourceType.OXYGEN));
+    System.out.println("Water : " + getTotalResourceCount(ResourceType.WATER));
+    System.out.println("Food : " + getTotalResourceCount(ResourceType.FOOD));
+    System.out.println("Fuel : " + getTotalResourceCount(ResourceType.FUEL));
+    System.out.println("Battery : " + getTotalResourceCount(ResourceType.BATTERY_POWER));
+    System.out.println("Medical Supplies : " + getTotalResourceCount(ResourceType.MEDICAL_SUPPLIES));
+    System.out.println("Spare Parts : " + getTotalResourceCount(ResourceType.SPARE_PARTS));
+
+}
+
 }
