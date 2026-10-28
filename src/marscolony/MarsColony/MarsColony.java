@@ -11,13 +11,20 @@ import java.util.List;
 public class MarsColony {
     //Related to stimulation part
     private static int colonyTime = 0;
+
+    private static List<Mission> missions ;
     private static Mission activeMission = null;
 
     private static List<Facilities> facilities = new ArrayList<>();
-    private static List<Agent> agents = new ArrayList<>();
+    private static List<Human> crewMembers = new ArrayList<>();
+    private static List<RoboticUnit> robots = new ArrayList<>();
 
-    public static void addAgent(Agent agent) {
-        agents.add(agent);
+    public static void addHuman(Human human) {
+        crewMembers.add(human);
+    }
+
+    public static void addRoboticUnit(RoboticUnit roboticUnit) {
+        robots.add(roboticUnit);
     }
 
     public static void addFacility(Facilities facility) {
@@ -109,6 +116,32 @@ public static void advanceTime(int time)
         }
     }
 }
+// handling on mission at a time
+public boolean startMission(Mission mission)
+{
+    if(activeMission!=null)
+    {
+        mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
+        return false;
+    }
+    else
+    {
+        if()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 public void colonyResourcesStatusReport()
 {

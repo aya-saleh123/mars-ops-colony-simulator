@@ -12,7 +12,7 @@ public abstract class RoboticUnit extends Agent{
         super(idNumber, skill);
         this.batteryLevel = BatteryLevel.HIGH;
         this.isOperational = true;
-        MarsColony.addAgent(this);
+        MarsColony.addRoboticUnit(this);
     }
 
     public BatteryLevel getBatteryLevel() {

@@ -12,8 +12,8 @@ public abstract class Mission {
     private int elapsed;
     private List<Agent> agents;
     private Facilities target;
-   private int  missionDuration;
-   private MissionState state;
+    private int  missionDuration;
+    private MissionState state;
 
    public Mission(String name, int missionDuration) {
     this.name = name;
