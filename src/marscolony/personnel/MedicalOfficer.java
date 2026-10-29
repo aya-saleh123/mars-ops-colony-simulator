@@ -19,15 +19,9 @@ public class MedicalOfficer extends Human {
     }
 
     public void incHealthStat(Human patient) {
-       System.out.println("Medical Officer " + getName() + " is increasing the health status of " + patient.getName());
-       if(patient.getFatigueLevel() == FatigueLevel.LOW) {
-           patient.setFatigueLevel(FatigueLevel.MEDIUM);
-       } else if(patient.getFatigueLevel() == FatigueLevel.MEDIUM) {
-           patient.setFatigueLevel(FatigueLevel.HIGH);
-       } else {
-          setHealthy(true);
-       }
-        
+       System.out.println("Medical Officer " + getName() + " is treating " + patient.getName());
+       patient.improveHealth();
+       incFatigueLevel(); 
     }
 
     @Override

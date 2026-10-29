@@ -17,10 +17,10 @@ public class Engineer extends Human {
     @Override 
     public void assignMission() {
         if (isAvailable() && getFatigueLevel() != FatigueLevel.HIGH) {
-            System.out.println("Assigning mission to Engineer: " + getName());
+            System.out.println("Assigning mission to: " + getName());
             this.setAvailable(false);
         } else {
-            System.out.println("Engineer " + getName() + " is currently unavailable for missions.");
+            System.out.println(getName() + " is currently unavailable for missions.");
         }
     }
 

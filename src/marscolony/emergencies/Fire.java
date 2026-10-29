@@ -24,7 +24,7 @@ public class Fire extends Emergency {
         damageEquipment(lab);
 
     }
-
+    // Aya: dont forget to make the fire worsenHealth() of people in the fire
     @Override //Aya: this is an added method, please integrate it into this class
     public void findResponders() {
         for (Agent a : MarsColony.getHumans()) {

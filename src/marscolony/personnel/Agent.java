@@ -7,6 +7,8 @@ public abstract class Agent {
     private String location;
     private Capability skill;
     private boolean isAvailable;
+    public static final String BASE = "Base";
+    public static final String SURFACE = "Martian Surface";
 
     public Agent(String idNumber, Capability skill) {
         if (idNumber == null || idNumber.isEmpty()) {
@@ -16,7 +18,7 @@ public abstract class Agent {
             throw new IllegalArgumentException("Skill cannot be null.");
         }
         this.idNumber = idNumber;
-        this.location = "Base";
+        this.location = BASE;
         this.skill = skill;
         this.isAvailable = true;
         this.skill = skill;

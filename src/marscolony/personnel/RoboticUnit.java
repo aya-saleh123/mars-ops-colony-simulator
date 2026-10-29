@@ -66,7 +66,14 @@ public abstract class RoboticUnit extends Agent{
         }
     }
 
-    public abstract void assignMission(EnvironmentCondition condition);
+    public void assignMission(EnvironmentCondition condition) {
+        if (isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
+            System.out.println("Assigning mission to: " + getIdNumber());
+            this.setAvailable(false);
+        } else {
+            System.out.println(getIdNumber() + " is currently unavailable for missions.");
+        }
+    }
 
     @Override 
     public boolean canPerform(Capability requiredSkill) {

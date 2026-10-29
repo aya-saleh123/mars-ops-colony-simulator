@@ -4,7 +4,7 @@ import marscolony.missions.Capability;
 
 public abstract class Human extends Agent {
     private String name;
-    private boolean isHealthy;
+    private HealthStatus healthStatus;
     private FatigueLevel fatigueLevel;
 
     public Human(String name, String idNumber, Capability skill) {
@@ -13,7 +13,7 @@ public abstract class Human extends Agent {
             throw new IllegalArgumentException("Name cannot be null or empty.");
         }
         this.name = name;
-        this.isHealthy = true; 
+        this.healthStatus = HealthStatus.HEALTHY;
         this.fatigueLevel = FatigueLevel.LOW; 
         MarsColony.addHuman(this);
     }
@@ -22,22 +22,32 @@ public abstract class Human extends Agent {
         return name;
     }
 
-    public boolean isHealthy() {
-        return isHealthy;
+    public HealthStatus getHealthStatus() {
+        return healthStatus;
     }
 
     public FatigueLevel getFatigueLevel() {
         return fatigueLevel;
     }
 
-    public void setHealthy(boolean healthy) {
-        if (!healthy && fatigueLevel == FatigueLevel.LOW) {
-            throw new IllegalStateException("Cannot set health to unhealthy when fatigue level is low.");
-        }
-        else if (healthy && fatigueLevel == FatigueLevel.HIGH) {
-            throw new IllegalStateException("Cannot set health to healthy when fatigue level is high.");
-        }
-        isHealthy = healthy;
+    public void setHealthStatus(HealthStatus h) { 
+        if (h == null) 
+            throw new IllegalArgumentException("Health cannot be null."); 
+        healthStatus = h; 
+    }
+
+    public void improveHealth() {
+        if (healthStatus == HealthStatus.CRITICAL) 
+            healthStatus = HealthStatus.INJURED;
+        else if (healthStatus == HealthStatus.INJURED) 
+            healthStatus = HealthStatus.HEALTHY;
+    }
+
+    public void worsenHealth() {
+        if (healthStatus == HealthStatus.HEALTHY) 
+            healthStatus = HealthStatus.INJURED;
+        else if (healthStatus == HealthStatus.INJURED) 
+            healthStatus = HealthStatus.CRITICAL;
     }
 
     public void setFatigueLevel(FatigueLevel fatigueLevel) {
@@ -74,11 +84,18 @@ public abstract class Human extends Agent {
         }
     }
 
-    public abstract void assignMission();
+    public void assignMission() {
+        if (isAvailable() && getFatigueLevel() != FatigueLevel.HIGH) {
+            System.out.println("Assigning mission to: " + getName());
+            this.setAvailable(false);
+        } else {
+            System.out.println(getName() + " is currently unavailable for missions.");
+        }
+    }
 
     @Override 
     public boolean canPerform(Capability requiredSkill) {
-        return isAvailable() && getSkill() == requiredSkill && isHealthy() && getFatigueLevel() != FatigueLevel.HIGH;
+        return isAvailable() && getSkill() == requiredSkill && getHealthStatus() == HealthStatus.HEALTHY && getFatigueLevel() != FatigueLevel.HIGH;
     }
 
     @Override
