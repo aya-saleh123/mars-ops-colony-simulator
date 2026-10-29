@@ -3,6 +3,7 @@ package marscolony.conditions;
 import java.util.ArrayList;
 import java.util.List;
 
+import marscolony.MarsColony.MarsColony;
 import marscolony.missions.FailureReason;
 import marscolony.missions.Mission;
 import marscolony.missions.MissionState;
@@ -35,26 +36,15 @@ public class Conditions {
         return condition;
     }
 
-    public void setConsequencesToEnvCond() {
+    public void worsenEnviromentCondition(EnvironmentCondition envCondition) {
+          MarsColony.currentCondition = envCondition;
+          if (MarsColony.activeMission == null) {
+            return;
+          } 
+          
+    }
 
-        for (Mission mission : missions) {
+    public void resetEnvironmentCondition() {
 
-            if (mission == null) {
-                continue;
-            }
-
-            MissionState state = mission.getState();
-
-            if (state != MissionState.ASSIGNED && state != MissionState.IN_PROGRESS) {
-                continue;
-            }
-
-            String problem = mission.getEnvironmentProblem(condition);
-
-            if (problem != null && !problem.isEmpty()) {
-                System.out.println("Mission '" + mission.getName() + "' failed due to environmental conditions: " + problem);
-                mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
-            }
-        }
     }
 }

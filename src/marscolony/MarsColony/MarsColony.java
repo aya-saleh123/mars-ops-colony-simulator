@@ -13,10 +13,12 @@ import java.util.Map;
 
 public class MarsColony {
     // Related to stimulation part
+
+    //why the fuck is everything private!
     private static int colonyTime = 0;
-    private static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
+    public static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
     private static List<Mission> missions = new ArrayList<>();
-    private static Mission activeMission = null;
+    public static Mission activeMission = null;
 
     private static List<Facilities> facilities = new ArrayList<>();
     private static List<Human> crewMembers = new ArrayList<>();
