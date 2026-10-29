@@ -111,7 +111,7 @@ public class Exploration extends Mission {
 
     @Override
     protected void Completed(){
-        System.out.println("Region "+ destination +" explored");
+        System.out.println("Region "+ destination + " explored");
     } 
 
     @Override 
