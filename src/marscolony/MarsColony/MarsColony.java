@@ -1,5 +1,6 @@
 package marscolony.MarsColony;
 
+import marscolony.Equipment.Equipment;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
 import marscolony.resources.*;
@@ -18,6 +19,17 @@ public class MarsColony {
     private static List<Facilities> facilities = new ArrayList<>();
     private static List<Human> crewMembers = new ArrayList<>();
     private static List<RoboticUnit> robots = new ArrayList<>();
+    private static List<Equipment> equipments = new ArrayList<>();
+
+
+    public static void addEquipement(Equipment equipment) {
+        equipments.add(equipment);
+    }
+
+    public static List<Equipment> getEquipments() {
+        return equipments;
+    }
+
 
     public static void addHuman(Human human) {
         crewMembers.add(human);
@@ -33,6 +45,10 @@ public class MarsColony {
 
     public static List<RoboticUnit> getRobots() {
         return robots;
+    }
+
+    public static List<Facilities> getFacilities() {
+        return facilities;
     }
 
     public static void addFacility(Facilities facility) {
@@ -117,6 +133,7 @@ public class MarsColony {
     // handling on mission at a time
 public boolean startMission(Mission mission)
 {
+        missions.add(mission);
         if(activeMission!=null)
         {
             mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
@@ -124,7 +141,73 @@ public boolean startMission(Mission mission)
         }
         else
         {
-            // check available agents
+            if(mission instanceof Repair)
+            {
+                if(!((Repair)mission).checkRequiredForMission())
+                {
+                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                    return false;
+                }
+                if(mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(ResourceType.BATTERY_POWER))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    return false;
+                }
+                if(mission.getRequiredAmount(ResourceType.SPARE_PARTS) > getTotalResourceCount(ResourceType.SPARE_PARTS))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
+                    return false;
+                }
+
+                activeMission = mission;
+                return true;
+
+            }
+            else if(mission instanceof Research)
+            {
+                if(!((Research)mission).checkRequiredForMission())
+                {
+                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                    return false;
+                }
+                if(mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(ResourceType.BATTERY_POWER))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    return false;
+                }
+                if(mission.getRequiredAmount(ResourceType.WATER) > getTotalResourceCount(ResourceType.WATER))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
+                    return false;
+                }
+
+                activeMission = mission;
+                return true;
+            }
+            else if(mission instanceof Rescue)
+            {
+                if(!((Research)mission).checkRequiredForMission())
+                {
+                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                    return false;
+                }
+                if()
+                if(mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(ResourceType.BATTERY_POWER))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    return false;
+                }
+                if(mission.getRequiredAmount(ResourceType.WATER) > getTotalResourceCount(ResourceType.WATER))
+                {
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
+                    return false;
+                }
+
+                activeMission = mission;
+                return true;
+            }
+
+            
         }
         return false;
     }
