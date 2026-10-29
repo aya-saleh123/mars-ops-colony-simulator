@@ -11,7 +11,7 @@ public abstract class Mission {
     private FailureReason reasonOfFailure;
     private String name;
     private int elapsed;
-    private List<Agent> agents;
+    protected List<Agent> agents;
     private Facilities target;
     private int  missionDuration;
     private MissionState state;

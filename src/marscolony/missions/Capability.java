@@ -2,6 +2,6 @@ package marscolony.missions;
 
 public enum Capability {
 
-    SCIENCE, SURFACE_TRAVEL, AERIAL, REPAIR, MEDICAL, FIREFIGHTING 
+    SCIENCE, SURFACE_TRAVEL, AERIAL, REPAIR, MEDICAL, FIREFIGHTING
 
 }

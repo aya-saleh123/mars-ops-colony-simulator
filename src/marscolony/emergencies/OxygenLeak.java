@@ -21,31 +21,7 @@ public class OxygenLeak extends Emergency {
 
     @Override 
     public void findResponders() {
-        for (Agent a : MarsColony.getHumans()) {
-            if (a.getClass() == Engineer.class) {
-                if (((Engineer) a).canPerform(Capability.REPAIR)) {
-                    this.addResponder(a);
-                    a.setAvailable(false);
-                    availableEngineerFound = true;
-                    break;
-                }
-            }
-        }
-        for (Agent a : MarsColony.getRobots()) {
-            if (a.getClass() == RepairRobot.class) {
-                if (((RepairRobot) a).canPerform(Capability.REPAIR)) {
-                    this.addResponder(a);
-                    a.setAvailable(false);
-                    availableRepairRobotFound = true;
-                    break;
-                }
-            }
-        }
-        if (!availableEngineerFound && !availableRepairRobotFound) {
-            status = EmergencyStatus.UNRESOLVED;
-            System.out.println("No available Engineer or Repair Robot to respond to the oxygen leak emergency.");
-            return;
-        }
+        
         respondToEmergency();
     }
 

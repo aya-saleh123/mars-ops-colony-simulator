@@ -1,6 +1,16 @@
 package marscolony.missions;
+import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
+import marscolony.facilities.Facilities;
+import marscolony.facilities.FacilityStatus;
+import marscolony.facilities.Laboratory;
+import marscolony.personnel.Engineer;
+import marscolony.personnel.Human;
+import marscolony.personnel.RepairRobot;
+import marscolony.personnel.RoboticUnit;
+import marscolony.personnel.Scientist;
 import marscolony.resources.ResourceType;
+import marscolony.Equipment.*;
 import java.util.List;
 public class Research extends Mission {
     
@@ -33,4 +43,51 @@ public class Research extends Mission {
             return null;
     
     }
+public boolean checkRequiredForMission()
+    {
+        boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
+        for(Human human : MarsColony.getHumans())
+        {
+            if(human instanceof Scientist)
+            {
+                humanStatus = human.canPerform(Capability.SCIENCE); 
+                if(humanStatus)
+                {
+                    this.agents.add(human); // find a way to release if failed or succeeded
+                    break;
+                }
+            }
+            
+        }
+        for(Equipment equipment : MarsColony.getEquipments() )
+        {
+            if( equipment.getType() == EquipmentType.SCIENTIFIC_EQUIPMENT && equipment.isOperationalStatus())
+            {
+                equipmentStatus = true;
+            }
+        }
+
+        for(Facilities facility : MarsColony.getFacilities())
+        {
+            if(facility instanceof Laboratory)
+            {
+                if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
+                {
+                    labStatus = true;
+                    break;
+                }
+            }
+        }
+
+        
+        if(humanStatus && equipmentStatus && labStatus){
+            return true;
+        }
+        else
+        {
+            releaseAgents();
+            return false;
+        }
+    }
+
 }

@@ -1,7 +1,8 @@
 package marscolony.missions;
 import marscolony.resources.ResourceType;
+import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
-import marscolony.personnel.Agent;
+import marscolony.personnel.*;
 import marscolony.facilities.Facilities;
 import java.util.List;
 import java.util.ArrayList;
@@ -47,9 +48,50 @@ public class Rescue extends Mission{
       @Override
     protected void Completed() {
       rescuedAgent.setLocation(targetLocation.getLocationName());
-      System.out.println(rescuedAgent.getIdNumber()+" rescued and brought to "+targetLocation.getLocationName());
+      System.out.println(rescuedAgent.getIdNumber()+" rescued and brought to "+ targetLocation.getLocationName());
 
      }
+
+
+
+     public boolean checkRequiredForMission()
+    {
+        boolean humanStatus = false , robotStatus = false ;
+        for(Human human : MarsColony.getHumans())
+        {
+            if(human instanceof Firefighter)
+            {
+                humanStatus = human.canPerform(Capability.FIREFIGHTING); 
+                if(humanStatus)
+                {
+                    this.agents.add(human);
+                    break;
+                }
+            }
+        }
+        for(RoboticUnit robot : MarsColony.getRobots() )
+        {
+            if(robot instanceof Drone)
+            {
+                robotStatus = robot.canPerform(Capability.AERIAL);
+                if(robotStatus)
+                {
+                    this.agents.add(robot);
+                    break;
+                }
+            }
+        }
+        if(humanStatus && robotStatus){
+            return true;
+        }
+        else
+        {
+            releaseAgents();
+            return false;
+        }
+    }
+
+
 
 
 }
