@@ -1,9 +1,15 @@
 package marscolony.missions;
 import java.util.List;
+
+import marscolony.Equipment.Equipment;
+import marscolony.Equipment.EquipmentType;
+import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
 import marscolony.personnel.*;
 import marscolony.facilities.Facilities;
+import marscolony.facilities.FacilityStatus;
+import marscolony.facilities.Laboratory;
 
 public class Exploration extends Mission {
     private String destination;
@@ -25,7 +31,7 @@ public class Exploration extends Mission {
     }
    
    @Override
-   public int getRequiredAmount(ResourceType type) {
+   public int getRequiredAmount(ResourceType type) { // add only battery ya Ta2touzaaaa
     throw new UnsupportedOperationException("TODO");
     //until writing body
    }
@@ -48,6 +54,43 @@ public class Exploration extends Mission {
     public String getDestination() {
         return destination;
     }
+
+    public boolean checkRequiredForMission() // He says req scientific skills??????
+    {
+        boolean robotStatus = false , equipmentStatus = false ,labStatus = false  ;
+        for(RoboticUnit robot : MarsColony.getRobots())
+        {
+            if(robot instanceof ExplorationRover)
+            {
+                robotStatus = robot.canPerform(Capability.SURFACE_TRAVEL); 
+                if(robotStatus)
+                {
+                    this.agents.add(robot); // find a way to release if failed or succeeded
+                    break;
+                }
+            }
+            
+        }
+        for(Equipment equipment : MarsColony.getEquipments() )
+        {
+            if( equipment.getType() == EquipmentType.EXPLORATION_EQUIPMENT && equipment.isOperationalStatus())
+            {
+                equipmentStatus = true;
+                break;
+            }
+        }
+
+        
+        if(robotStatus && equipmentStatus){
+            return true;
+        }
+        else
+        {
+            releaseAgents();
+            return false;
+        }
+    }
+
 
 
        
