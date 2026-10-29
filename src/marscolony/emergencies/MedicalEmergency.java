@@ -1,78 +1,104 @@
 package marscolony.emergencies;
+
+import java.util.ArrayList;
 import java.util.List;
-import marscolony.facilities.*;
-import marscolony.facilities.FacilityStatus;
-import marscolony.personnel.*;
-import marscolony.resources.*;
-import marscolony.missions.*;
+
 import marscolony.MarsColony.MarsColony;
+import marscolony.facilities.FacilityStatus;
+import marscolony.facilities.Facilities;
+import marscolony.facilities.Habitat;
+import marscolony.missions.Capability;
+import marscolony.missions.FailureReason;
+import marscolony.personnel.Agent;
+import marscolony.personnel.FatigueLevel;
+import marscolony.personnel.Human;
+import marscolony.personnel.MedicalOfficer;
+import marscolony.resources.ResourceType;
 
 public class MedicalEmergency extends Emergency {
-   List<Human> patients;
-   boolean availableMedicalOfficerFound = false;
-   boolean availableOperationalFacilityFound = false;
-   boolean availableMedicalSuppliesFound = false;
-   EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
-   Habitat medicalHabitat;
+   private final List<Human> patients;
+   private final Habitat medicalHabitat;
+   private MedicalOfficer medicalOfficer;
 
-   public MedicalEmergency(Facilities medEmergFacility,Habitat medicalHabitat, List<Human> patients) {
-      super(medEmergFacility);
-      this.patients = patients;
+   public MedicalEmergency(Facilities incidentFacility, Habitat medicalHabitat, List<Human> patients) {
+      super(incidentFacility);
       this.medicalHabitat = medicalHabitat;
+      this.patients = patients;
    }
 
-   @Override 
-    public void findResponders() {
-        for (Agent a : MarsColony.getHumans()) {
-            if (a.getClass() == MedicalOfficer.class) {
-                if (((MedicalOfficer) a).canPerform(Capability.MEDICAL)) {
-                    this.addResponder(a);
-                    a.setAvailable(false);
-                    availableMedicalOfficerFound = true;
-                    break;
-                }
-            }
-        }
-        if (!availableMedicalOfficerFound) {
-            status = EmergencyStatus.UNRESOLVED;
-            System.out.println("No available Medical Officer to respond to the medical emergency.");
-            return;
-        }
-        respondToEmergency();
-   }
+   @Override
+   public void findResponders() {
+      medicalOfficer = null;
 
-   public void respondToEmergency() {
-      for (Agent a : getResponders()) {
+      if (patients.isEmpty()) {
 
-         if (a.isAvailable() && a.getClass() == MedicalOfficer.class && 
-         medicalHabitat.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL 
-         && getFacility().getResourceCount(ResourceType.MEDICAL_SUPPLIES) > 0) {
-            availableMedicalOfficerFound = true;
-            availableOperationalFacilityFound = true;
-            availableMedicalSuppliesFound = true;
-            MedicalOfficer medicalOfficer = (MedicalOfficer) a;
-            medicalOfficer.assignMission();
-            medicalOfficer.setAvailable(false);
-            medicalOfficer.medicalAssist(patients);
-            
+         return;
+      }
+
+      for (Agent agent : MarsColony.getHumans()) {
+         if (agent.canPerform(Capability.MEDICAL)) {
+            medicalOfficer = (MedicalOfficer) agent;
+            break;
          }
       }
 
-      if (!availableMedicalOfficerFound) {
-         status = EmergencyStatus.UNRESOLVED;
-         System.out.println("No available Medical Officer to respond to the medical emergency.");
-      } else if (!availableOperationalFacilityFound) {
-         status = EmergencyStatus.UNRESOLVED;
-         System.out.println("No available operational facility to respond to the medical emergency.");
-      } else if (!availableMedicalSuppliesFound) {
-         status = EmergencyStatus.UNRESOLVED;
-         System.out.println("No available medical supplies to respond to the medical emergency.");
+      if (medicalOfficer == null) {
+         setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
       }
-      else{
-         getFacility().setOperationalStatus(FacilityStatus.OPERATIONAL);
-         System.out.println("Medical emergency resolved.");
-         status = EmergencyStatus.RESOLVED;
-     //check later if this is correct, maybe we need to check if the patients are healthy or not
+
+      if (medicalHabitat == null || medicalHabitat.getFacilityOperationalStatus() != FacilityStatus.OPERATIONAL) {
+         setReason(FailureReason.UNAVAILABLE_FACILITIES);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
+      }
+
+      int supplyCost = patients.size();
+
+      if (medicalHabitat.getResourceCount(ResourceType.MEDICAL_SUPPLIES) < supplyCost) {
+         setReason(FailureReason.INSUFFICIENT_RESOURCES);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
+      }
+
+      dispatchResponder(medicalOfficer);
+      respondToEmergency();
    }
-}
+
+   @Override
+   public void respondToEmergency() {
+      if (medicalOfficer == null) {
+         setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
+      }
+      if (medicalHabitat == null || medicalHabitat.getFacilityOperationalStatus() != FacilityStatus.OPERATIONAL) {
+         setReason(FailureReason.UNAVAILABLE_FACILITIES);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
+      }
+
+      int supplyCost = patients.size();
+
+      if (medicalHabitat.getResourceCount(ResourceType.MEDICAL_SUPPLIES) < supplyCost) {
+         setReason(FailureReason.INSUFFICIENT_RESOURCES);
+         setStatus(EmergencyStatus.UNRESOLVED);
+         return;
+      }
+      medicalHabitat.removeResource(ResourceType.MEDICAL_SUPPLIES, supplyCost);
+
+      for (Human patient : patients) {
+         patient.decFatigueLevel();
+         medicalOfficer.medicalAssist(patient);
+      }
+
+      medicalOfficer.justFinished();
+
+      setStatus(EmergencyStatus.RESOLVED);
+      setReason(FailureReason.NONE);
+
+      System.out.println("Medical emergency resolved. Medical supplies used: " + supplyCost);
+      releaseResponders();
+   }
 }

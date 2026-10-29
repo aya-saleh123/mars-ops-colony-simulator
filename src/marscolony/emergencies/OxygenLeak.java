@@ -1,88 +1,95 @@
 package marscolony.emergencies;
-import marscolony.facilities.*;
-import marscolony.personnel.*;
-import marscolony.resources.*;
-import marscolony.conditions.EnvironmentCondition;
-import marscolony.missions.*;
+
 import marscolony.MarsColony.MarsColony;
+import marscolony.facilities.FacilityStatus;
+import marscolony.facilities.Habitat;
+import marscolony.missions.Capability;
+import marscolony.missions.FailureReason;
+import marscolony.personnel.Agent;
+import marscolony.personnel.Engineer;
+import marscolony.personnel.RepairRobot;
+import marscolony.resources.ResourceType;
 
 public class OxygenLeak extends Emergency {
-    EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
-    Boolean availableEngineerFound = false;
-    Boolean availableRepairRobotFound = false;
-    private EnvironmentCondition currentCondition;
-    Habitat oxygenLeakHab;
+    private static final int OXYGEN_LOSS = 50;
+    private static final int SPARE_PARTS_COST = 2;
 
-    public OxygenLeak(Habitat oxygenLeakHab)
-    {
+    private final Habitat oxygenLeakHab;
+    private Engineer engineer;
+    private RepairRobot repairRobot;
+
+    public OxygenLeak(Habitat oxygenLeakHab) {
         super(oxygenLeakHab);
         this.oxygenLeakHab = oxygenLeakHab;
-        this.currentCondition =  MarsColony.getEnvCondition();
         oxygenLeakHab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
-        int lost = oxygenLeakHab.removeUpTo(ResourceType.OXYGEN, 50);
-        System.out.println("Oxygen leak consumed " + lost + " oxygen in " + oxygenLeakHab.getLocationName());
+        int lost = oxygenLeakHab.removeUpTo(ResourceType.OXYGEN, OXYGEN_LOSS);
+        System.out.println("Oxygen leak detected in "+ oxygenLeakHab.getLocationName()+ ". Oxygen lost: " + lost + ".");
     }
 
-    @Override 
+    @Override
     public void findResponders() {
-         for (Agent a : MarsColony.getHumans()) {
-            if (a.getClass() == Engineer.class) {
-                if (((Engineer) a).canPerform(Capability.SCIENCE)) {
-                    this.addResponder(a);
-                    a.setAvailable(false);
-                    availableEngineerFound = true;
-                    break;
-                }
-            }
-            if (a.getClass() == RepairRobot.class) {
-                if (((RepairRobot) a).canPerform(Capability.REPAIR)) {
-                    this.addResponder(a);
-                    a.setAvailable(false);
-                    availableRepairRobotFound = true;
-                    break;
-                }
+        engineer = null;
+        repairRobot = null;
+
+        for (Agent agent : MarsColony.getHumans()) {
+            if (agent.canPerform(Capability.REPAIR)) {
+                this.addResponder(agent);
+                engineer = (Engineer) agent;
+                break;
             }
         }
-        if (!availableEngineerFound && !availableRepairRobotFound) {
-            status = EmergencyStatus.UNRESOLVED;
-            System.out.println("No available Engineer or RepairRobot to respond to the oxygen leak emergency.");
+
+        for (Agent agent : MarsColony.getRobots()) {
+            if (agent.canPerform(Capability.REPAIR)) {
+                this.addResponder(agent);
+                repairRobot = (RepairRobot) agent;
+                break;
+            }
+        }
+
+        if (engineer == null || repairRobot == null) {
+            setStatus(EmergencyStatus.UNRESOLVED);
+            setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+            chargeUnresolvedLeakLoss();
+            System.out.println("Oxygen leak unresolved: " + getReason());
             return;
         }
+
+        if (!MarsColony.deductResourceFromFacilities(ResourceType.SPARE_PARTS, SPARE_PARTS_COST)) {
+            setStatus(EmergencyStatus.UNRESOLVED);
+            setReason(FailureReason.INSUFFICIENT_RESOURCES);
+            chargeUnresolvedLeakLoss();
+            System.out.println("Oxygen leak unresolved: " + getReason());
+            return;
+        }
+
+        dispatchResponder(engineer);
+        dispatchResponder(repairRobot);
         respondToEmergency();
-    
     }
 
-    @Override 
+    @Override
     public void respondToEmergency() {
-         for (Agent a : getResponders()) {
-            if (a.isAvailable() && a.getClass() == Engineer.class) {
-                availableEngineerFound = true;
-                Engineer engineer = (Engineer) a;
-                engineer.assignMission();
-                //engineer.setAvailable(false); lalready set false in assignMission
-                engineer.repairOxygenLeak();
+        if (engineer == null || repairRobot == null) {
+            setStatus(EmergencyStatus.UNRESOLVED);
+            if (getReason()==null) {
+                setReason(FailureReason.UNAVAILABLE_PERSONNEL);
             }
-            if (a.isAvailable() && a.getClass() == RepairRobot.class) {
-                availableRepairRobotFound = true;
-                RepairRobot repairRobot = (RepairRobot) a;
-                repairRobot.assignMission(currentCondition);
-               // repairRobot.setAvailable(false); already set false in assignMission
-                repairRobot.repairOxygenLeak();
-
-            }
-        }
-        if (!availableEngineerFound && !availableRepairRobotFound) {
-            status = EmergencyStatus.UNRESOLVED;
-            getFacility().removeUpTo(ResourceType.OXYGEN, 50);
-            System.out.println("No available Engineer or RepairRobot to respond to the oxygen leak emergency.");
+            return;
         }
         else {
-            status = EmergencyStatus.RESOLVED;
-            getFacility().setOperationalStatus(FacilityStatus.OPERATIONAL);
-            System.out.println("Oxygen leak emergency resolved.");
+            engineer.repairOxygenLeak();
+            repairRobot.repairOxygenLeak();
+            oxygenLeakHab.setOperationalStatus(FacilityStatus.OPERATIONAL);
+            setStatus(EmergencyStatus.RESOLVED);
+            setReason(FailureReason.NONE);
+            System.out.println("Oxygen leak resolved at "+ oxygenLeakHab.getLocationName() + ".");
+            releaseResponders();
         }
-
     }
 
+    private void chargeUnresolvedLeakLoss() {
+        oxygenLeakHab.removeUpTo(ResourceType.OXYGEN, OXYGEN_LOSS);
+        oxygenLeakHab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
     }
-
+}

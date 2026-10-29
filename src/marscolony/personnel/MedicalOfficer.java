@@ -10,15 +10,12 @@ public class MedicalOfficer extends Human {
         super(name, idNumber, Capability.MEDICAL);
     }
 
-    public void medicalAssist(List<Human> patients) {
-        // Implementation for assisting with medical emergencies
+    public void medicalAssist(Human patient) {
         System.out.println("Medical Officer " + getName() + " is providing medical assistance.");
-        for (Human patient : patients) {
-            incHealthStat(patient);
-        }
+        incHealthStat(patient);
     }
 
-    public void incHealthStat(Human patient) {
+    private void incHealthStat(Human patient) {
        System.out.println("Medical Officer " + getName() + " is treating " + patient.getName());
        patient.improveHealth();
        incFatigueLevel(); 

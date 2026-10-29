@@ -1,100 +1,127 @@
 package marscolony.emergencies;
+
+import marscolony.MarsColony.MarsColony;
 import marscolony.facilities.Facilities;
 import marscolony.missions.Capability;
-import marscolony.personnel.*;
-import marscolony.resources.ResourceType;
-import marscolony.MarsColony.MarsColony;
 import marscolony.missions.Exploration;
 import marscolony.missions.FailureReason;
+import marscolony.personnel.Agent;
+import marscolony.personnel.BatteryLevel;
+import marscolony.personnel.Engineer;
+import marscolony.personnel.ExplorationRover;
+import marscolony.personnel.RepairRobot;
+import marscolony.resources.ResourceType;
 
 public class RoverBreakdown extends Emergency {
-    Boolean availableEngineerFound = false;
-    Boolean availableRepairRobotFound = false;
-    ExplorationRover brokenRover;
-    Exploration FailedMission;
+    private static final int SPARE_PARTS_COST = 5;
 
-    public RoverBreakdown(Facilities facility, Exploration FailedMission)
-    {
+    private final ExplorationRover brokenRover;
+    private final Exploration failedMission;
+    private Engineer engineer;
+    private RepairRobot repairRobot;
+
+    public RoverBreakdown(Facilities facility, Exploration failedMission) {
         super(facility);
-        this.brokenRover = FailedMission.getRover();
-        this.FailedMission = FailedMission;
-        BreakdownHappens();
+        if (failedMission == null || failedMission.getRover() == null) {
+            throw new IllegalArgumentException("A rover breakdown requires an exploration mission with a rover");
+        }
+        this.brokenRover = failedMission.getRover();
+        this.failedMission = failedMission;
+
+        breakdownHappens();
     }
 
-    public void BreakdownHappens() {
-        System.out.println("Rover breakdown occurred during the exploration mission to " + FailedMission.getDestination());
+    @Override
+    public String getLocation() {
+        return "Martian Surface";
+    }
+
+    private void breakdownHappens() {
+        System.out.println("Rover breakdown occurred during the exploration mission to " + failedMission.getDestination() + ".");
+
         brokenRover.setOperational(false);
         brokenRover.setBatteryLevel(BatteryLevel.LOW);
-        FailedMission.fail(FailureReason.EQUIPMENT_FAILURE);
+        failedMission.fail(FailureReason.EQUIPMENT_FAILURE);
+
         if (brokenRover.isAvailable()) {
             brokenRover.setAvailable(false);
         }
+
         brokenRover.setLocation("Martian Surface");
-        System.out.println("The rover is now non-operational and located on the Martian surface. The exploration mission has failed.");
+
+        System.out.println("The rover remains on the Martian surface; the exploration mission has failed.");
     }
 
-    @Override 
+    @Override
     public void findResponders() {
-        System.out.println("Searching for available Engineer or Repair Robot to respond to the rover breakdown emergency.");
-        for (Agent a : MarsColony.getHumans()) {
-            if (a.getClass() == Engineer.class) {
-                if (((Engineer) a).canPerform(Capability.REPAIR)) {
-                    Engineer engineer = (Engineer) a;
-                    this.addResponder(engineer);
-                    availableEngineerFound = true;
-                    engineer.assignMission();
-                    break;
-                }
+        engineer = null;
+        repairRobot = null;
+
+        for (Agent agent : MarsColony.getHumans()) {
+            if (agent.canPerform(Capability.REPAIR)) {
+                engineer = (Engineer) agent;
+                break;
             }
         }
-        for (Agent a : MarsColony.getRobots()) {
-            if (a.getClass() == RepairRobot.class) {
-                if (((RepairRobot) a).canPerform(Capability.REPAIR)) {
-                    RepairRobot repairRobot = (RepairRobot) a;
-                    this.addResponder(repairRobot);
-                    availableRepairRobotFound = true;
-                    repairRobot.assignMission(MarsColony.getEnvCondition());
-                    break;
-                }
+
+        for (Agent agent : MarsColony.getRobots()) {
+            if (agent.canPerform(Capability.REPAIR)) {
+                repairRobot = (RepairRobot) agent;
+                break;
             }
         }
-        if (!availableEngineerFound && !availableRepairRobotFound) {
-            status = EmergencyStatus.UNRESOLVED;
-            System.out.println("No available Engineer or Repair Robot to respond to the oxygen leak emergency.");
+
+        if (engineer == null && repairRobot == null) {
+            setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+            setStatus(EmergencyStatus.UNRESOLVED);
             return;
         }
-        System.out.println("Proceeding to respond to the rover breakdown emergency...");
+
+        if (MarsColony.getTotalResourceCount(ResourceType.SPARE_PARTS) < SPARE_PARTS_COST) {
+            setReason(FailureReason.INSUFFICIENT_RESOURCES);
+            setStatus(EmergencyStatus.UNRESOLVED);
+            return;
+        }
+
+        if (engineer != null) {
+            dispatchResponder(engineer);
+        }
+
+        if (repairRobot != null) {
+            dispatchResponder(repairRobot);
+        }
+
         respondToEmergency();
     }
 
-    @Override 
+    @Override
     public void respondToEmergency() {
-        for (Agent a : getResponders()) {
-            if (a.getClass() == Engineer.class) {
-                Engineer engineer = (Engineer) a;
-                engineer.repairRover();
-            }
-            if (a.getClass() == RepairRobot.class) {
-                RepairRobot repairRobot = (RepairRobot) a;
-                repairRobot.repairRover();
-            }
-        }
-
-    }
-
-    public void roverRepaired() { //me4 fahma 7aga 
-        if (!MarsColony.deductResourceFromFacilities(ResourceType.SPARE_PARTS, 5)) {
-            System.out.println("Rover Breakdown Emergency is unresolved due to insufficient amount of spare parts.");
-            status = EmergencyStatus.UNRESOLVED;
+        if (engineer == null && repairRobot == null) {
+            setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+            setStatus(EmergencyStatus.UNRESOLVED);
             return;
         }
-        for (Agent a : getResponders()) {
-            a.setAvailable(true);
+
+        if (engineer != null) {
+            engineer.repairRover();
         }
-        status = EmergencyStatus.RESOLVED;
-        brokenRover.setAvailable(true);
+
+        if (repairRobot != null) {
+            repairRobot.repairRover();
+        }
+
+        brokenRover.setOperational(true);
         brokenRover.setBatteryLevel(BatteryLevel.HIGH);
         brokenRover.setLocation("Base");
-    }
 
+        if (!brokenRover.isAvailable()) {
+            brokenRover.setAvailable(true);
+        }
+
+        setStatus(EmergencyStatus.RESOLVED);
+        setReason(FailureReason.NONE);
+
+        System.out.println("Rover breakdown resolved. The rover has been repaired and returned to Base.");
+        releaseResponders();
+    }
 }

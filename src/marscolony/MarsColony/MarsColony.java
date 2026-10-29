@@ -60,7 +60,7 @@ public class MarsColony {
     }
 
     // we need to exclude destroyed and unavailable facilities
-    private static int getTotalResourceCount(ResourceType resource) {
+    public static int getTotalResourceCount(ResourceType resource) {
         int sum = 0;
         for (Facilities facility : facilities) {
             if (facility.getFacilityOperationalStatus() == FacilityStatus.DESTROYED

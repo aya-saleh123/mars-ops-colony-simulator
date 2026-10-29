@@ -13,6 +13,9 @@ public abstract class Emergency {
     protected FailureReason failReason = null;
 
     protected Emergency(Facilities facility) {
+        if (facility == null) {
+            throw new IllegalArgumentException("Emergency facility cannot be null.");
+        }
         this.facility = facility;
     }
 
@@ -24,16 +27,51 @@ public abstract class Emergency {
         return facility;
     }
 
+    public FailureReason getReason() {
+        return failReason;
+    }
+
+    protected void setReason(FailureReason failReason) {
+        this.failReason = failReason;
+    }
+
     public List<Agent> getResponders() {
         return responders;
+    }
+
+    public EmergencyStatus getStatus() {
+        return status;
+    }
+
+    protected void setStatus(EmergencyStatus status) {
+        this.status = status;
     }
 
     public String getLocation() { // get the location of the emergency
         return facility.getLocationName();
     }
 
-    public void addResponder(Agent responder) { // add a responder to the emergency
-        responders.add(responder);
+    public void addResponder(Agent responder) {
+        if (responder != null && !responders.contains(responder)) {
+            responders.add(responder);
+        }
+    }
+
+    protected void dispatchResponder(Agent responder) {
+        if (responder == null || !responder.isAvailable()) {
+            throw new IllegalArgumentException(
+                "Only an available responder can be dispatched."
+            );
+        }
+        addResponder(responder);
+        responder.setAvailable(false);
+        responder.setLocation(getLocation());
+    }
+
+    protected void releaseResponders() {
+        for (Agent responder : responders) {
+            responder.justFinished();
+        }
     }
 
     public abstract void respondToEmergency(); // respond to the emergency

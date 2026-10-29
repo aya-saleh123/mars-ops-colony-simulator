@@ -3,6 +3,7 @@ import marscolony.Equipment.Equipment;
 import marscolony.Equipment.EquipmentType;
 import marscolony.MarsColony.MarsColony;
 import marscolony.resources.*;
+import marscolony.personnel.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ public abstract class Facilities {
     private List<Resource> resources;
     //list of equipement
     private List<Equipment> equipments;
+    private List<Human> facilityHumanAgents;
+    private List<RoboticUnit> facilityRoboticAgents;
 
 
     public Facilities(

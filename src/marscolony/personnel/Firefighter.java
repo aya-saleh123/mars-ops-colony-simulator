@@ -9,7 +9,7 @@ public class Firefighter extends Human {
     }
 
     public void extinguishFire() {
-        // Implementation for extinguishing fire
+        System.out.println(getName() + "is extinguishing the fire!");
     }
 
     @Override
