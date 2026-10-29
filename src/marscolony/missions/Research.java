@@ -53,16 +53,12 @@ public class Research extends Mission {
             boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
             for(Human human : MarsColony.getHumans())
             {
-                if(human instanceof Scientist)
-                {
                     humanStatus = human.canPerform(Capability.SCIENCE); 
                     if(humanStatus)
                     {
                         this.assignAgent(human);
                         break;
                     }
-                }
-                
             }
             for(Equipment equipment : MarsColony.getEquipments() )
             {

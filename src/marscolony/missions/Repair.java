@@ -59,26 +59,21 @@ public class Repair extends Mission {
         boolean humanStatus = false , robotStatus = false ;
         for(Human human : MarsColony.getHumans())
         {
-            if(human instanceof Engineer)
+            humanStatus = human.canPerform(Capability.REPAIR); 
+            if(humanStatus)
             {
-                humanStatus = human.canPerform(Capability.REPAIR); 
-                if(humanStatus)
-                {
-                    this.assignAgent(human);;
-                    break;
-                }
+                this.assignAgent(human);;
+                break;
             }
         }
         for(RoboticUnit robot : MarsColony.getRobots() )
         {
-            if(robot instanceof RepairRobot)
+            
+            robotStatus = robot.canPerform(Capability.REPAIR);
+            if(robotStatus)
             {
-                robotStatus = robot.canPerform(Capability.REPAIR);
-                if(robotStatus)
-                {
-                    this.assignAgent(robot);;
-                    break;
-                }
+                this.assignAgent(robot);;
+                break;
             }
         }
         if(humanStatus && robotStatus){

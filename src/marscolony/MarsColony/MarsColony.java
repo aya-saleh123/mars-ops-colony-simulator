@@ -9,7 +9,6 @@ import marscolony.personnel.*;
 import marscolony.missions.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MarsColony {
     // Related to stimulation part
@@ -65,12 +64,11 @@ public class MarsColony {
     public static int getTotalResourceCount(ResourceType resource) {
         int sum = 0;
         for (Facilities facility : facilities) {
-            if (facility.getFacilityOperationalStatus() == FacilityStatus.DESTROYED
-                    || facility.getFacilityOperationalStatus() == FacilityStatus.UNAVAILABLE)
+            if (facility.getFacilityOperationalStatus() != FacilityStatus.OPERATIONAL) 
                 continue;
             sum += facility.getResourceCount(resource);
         }
-        return sum;
+        return sum ;
     }
 
     public static boolean deductResourceFromFacilities(ResourceType resource, int amount) {
@@ -78,7 +76,8 @@ public class MarsColony {
             if (amount <= getTotalResourceCount(resource)) {
                 findSuitableFacilitiesAndDeduct(resource, amount);
                 return true;
-            } else
+            }
+            else
                 return false;
 
         } else
@@ -137,17 +136,25 @@ public class MarsColony {
     }
 
     // handling on mission at a time
-    public boolean startMission(Mission mission) // ask aya about emergency && remember to ask ABOUT BATTERY
+    public boolean startMission(Mission mission) 
     {
+        if(mission == null)
+            return false;
+        if(mission.getState() == MissionState.COMPLETED || mission.getState() == MissionState.FAILED )//idk if needed 
+            return false;
         missions.add(mission);
         if (activeMission != null) {
-            mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
+            mission.fail(FailureReason.ANOTHER_ACTIVE_MISSION);
             return false;
         } else {
             if (mission instanceof Repair) {
+                if (currentCondition == EnvironmentCondition.DUST_STORM) {
+                    mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
+                    return false;
+                }
                 if (mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(
                         ResourceType.BATTERY_POWER)) {
-                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
                     return false;
                 }
                 if (mission.getRequiredAmount(ResourceType.SPARE_PARTS) > getTotalResourceCount(
@@ -161,13 +168,21 @@ public class MarsColony {
                 }
 
                 mission.acceptMission();
+                deductResourceFromFacilities(ResourceType.BATTERY_POWER,mission.getRequiredAmount(ResourceType.BATTERY_POWER));
+                deductResourceFromFacilities(ResourceType.SPARE_PARTS,mission.getRequiredAmount(ResourceType.SPARE_PARTS));
                 activeMission = mission;
                 return true;
 
             } else if (mission instanceof Research) {
+
+                if (currentCondition == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
+
+                    mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
+                    return false;
+                }
                 if (mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(
                         ResourceType.BATTERY_POWER)) {
-                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
                     return false;
                 }
                 if (mission.getRequiredAmount(ResourceType.WATER) > getTotalResourceCount(ResourceType.WATER)) {
@@ -180,10 +195,13 @@ public class MarsColony {
                 }
 
                 mission.acceptMission();
+                deductResourceFromFacilities(ResourceType.WATER,mission.getRequiredAmount(ResourceType.WATER));
+                deductResourceFromFacilities(ResourceType.BATTERY_POWER,mission.getRequiredAmount(ResourceType.BATTERY_POWER));
+
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Rescue) {
-                if (currentCondition == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
+                if (currentCondition != EnvironmentCondition.NORMAL) {
                     mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
                     return false;
                 }
@@ -197,6 +215,7 @@ public class MarsColony {
                 }
 
                 mission.acceptMission();
+                deductResourceFromFacilities(ResourceType.FUEL,mission.getRequiredAmount(ResourceType.FUEL));
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Exploration) {
@@ -215,6 +234,7 @@ public class MarsColony {
                 }
 
                 mission.acceptMission();
+                deductResourceFromFacilities(ResourceType.FUEL,mission.getRequiredAmount(ResourceType.FUEL));
                 activeMission = mission;
                 return true;
             }

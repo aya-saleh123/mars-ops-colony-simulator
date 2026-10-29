@@ -59,27 +59,21 @@ public class Rescue extends Mission{
         boolean humanStatus = false , robotStatus = false ;
         for(Human human : MarsColony.getHumans())
         {
-            if(human instanceof Firefighter)
-            {
                 humanStatus = human.canPerform(Capability.FIREFIGHTING); 
                 if(humanStatus)
                 {
                     this.assignAgent(human);
                     break;
                 }
-            }
         }
         for(RoboticUnit robot : MarsColony.getRobots() )
         {
-            if(robot instanceof Drone)
-            {
                 robotStatus = robot.canPerform(Capability.AERIAL);
                 if(robotStatus)
                 {
                     this.assignAgent(robot);
                     break;
                 }
-            }
         }
         if(humanStatus && robotStatus){
             return true;
