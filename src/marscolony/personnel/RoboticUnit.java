@@ -40,6 +40,33 @@ public abstract class RoboticUnit extends Agent{
         this.isOperational = operational;
     }
 
+    public void decBatteryLevel() {
+        if (batteryLevel == BatteryLevel.HIGH) {
+            batteryLevel = BatteryLevel.MEDIUM;
+        } else if (batteryLevel == BatteryLevel.MEDIUM) {
+            batteryLevel = BatteryLevel.LOW;
+        }
+    }
+
+    public void rechargeBattery() {
+        if (batteryLevel == BatteryLevel.HIGH) {
+            System.out.println("The robot " + this.getIdNumber() + " is already at high battery level, no need to recharge.");
+            return;
+        }
+        System.out.println("The robot " + this.getIdNumber() + " is recharging. Please wait...");
+        incBatteryLevel();
+        incBatteryLevel();
+        System.out.println("The robot finished charging, it's at high battery level.");
+    }
+
+    public void incBatteryLevel() {
+        if (batteryLevel == BatteryLevel.MEDIUM) {
+            batteryLevel = BatteryLevel.HIGH;
+        } else if (batteryLevel == BatteryLevel.LOW) {
+            batteryLevel = BatteryLevel.MEDIUM;
+        }
+    }
+
     public abstract void assignMission(EnvironmentCondition condition);
 
     @Override 

@@ -10,10 +10,9 @@ public class Exploration extends Mission {
     private ExplorationRover rover;
     private MissionState state;
 
-    public Exploration(String name, int missionDuration, String destination, ExplorationRover rover) {
+    public Exploration(String name, int missionDuration, String destination) {
         super(name, missionDuration);
         this.destination = destination;
-        this.rover = rover;
         this.state = MissionState.PENDING;
     }
 

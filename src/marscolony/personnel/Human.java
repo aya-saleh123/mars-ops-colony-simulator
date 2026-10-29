@@ -60,8 +60,10 @@ public abstract class Human extends Agent {
             System.out.println("Human " + getName() + " is already at low fatigue level. No need to rest.");
             return;
         }
-        System.out.println("Human " + getName() + " is resting to recover from fatigue.");
+        System.out.println(getName() + " is resting to recover from fatigue.");
         decFatigueLevel();
+        decFatigueLevel();
+        System.out.println(getName() + "has had a nice break and is at low fatigue level.");
     }
     
     public void decFatigueLevel() {

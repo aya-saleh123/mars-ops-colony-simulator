@@ -3,15 +3,11 @@ package marscolony.emergencies;
 import java.util.List;
 
 import marscolony.facilities.Facilities;
-import marscolony.personnel.Agent;
-import marscolony.personnel.Engineer;
-import marscolony.personnel.RepairRobot;
 import marscolony.missions.Capability;
 import marscolony.personnel.*;
 import marscolony.MarsColony.MarsColony;
 import marscolony.missions.MissionState;
 import marscolony.missions.Exploration;
-import marscolony.personnel.Human;
 import marscolony.conditions.EnvironmentCondition;
 
 public class RoverBreakdown extends Emergency {
@@ -57,9 +53,8 @@ public class RoverBreakdown extends Emergency {
                 if (((RepairRobot) a).canPerform(Capability.REPAIR)) {
                     RepairRobot repairRobot = (RepairRobot) a;
                     this.addResponder(repairRobot);
-                    repairRobot.setAvailable(false);
                     availableRepairRobotFound = true;
-                    System.out.println("Repair Robot " + repairRobot.getIdNumber() + " has been assigned to respond to the rover breakdown emergency.");
+                    repairRobot.assignMission(MarsColony.getEnvCondition());
                     break;
                 }
             }
@@ -77,19 +72,24 @@ public class RoverBreakdown extends Emergency {
         for (Agent a : getResponders()) {
             if (a.getClass() == Engineer.class) {
                 Engineer engineer = (Engineer) a;
-                engineer.assignMission();
-                engineer.setAvailable(false);
                 engineer.repairRover();
-                System.out.println("Engineer " + engineer.getName() + " is repairing the rover.");
             }
             if (a.getClass() == RepairRobot.class) {
                 RepairRobot repairRobot = (RepairRobot) a;
-                repairRobot.assignMission(MarsColony.getEnvCondition());
-                repairRobot.setAvailable(false);
                 repairRobot.repairRover();
-                System.out.println("Repair Robot " + repairRobot.getIdNumber() + " is repairing the rover.");
             }
         }
+    }
+
+    public void roverRepaired() {
+        //to Yara: minus spare parts here and make sure to add validation for if you don't have enough spare parts
+        for (Agent a : getResponders()) {
+            a.setAvailable(true);
+        }
+        status = EmergencyStatus.RESOLVED;
+        brokenRover.setAvailable(true);
+        brokenRover.setBatteryLevel(BatteryLevel.HIGH);
+        brokenRover.setLocation("Base");
     }
 
 }

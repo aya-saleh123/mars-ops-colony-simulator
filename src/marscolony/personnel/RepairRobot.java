@@ -12,8 +12,11 @@ public class RepairRobot extends RoboticUnit {
         // Implementation for repairing equipment
     }
 
-    public void repairRobot() {
+    
 
+    public void repairRover() {
+        decBatteryLevel();
+        System.out.println("Repair Robot " + getIdNumber() + " is repairing the rover.");
     }
 
     @Override
