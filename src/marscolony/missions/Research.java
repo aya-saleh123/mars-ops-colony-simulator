@@ -14,9 +14,9 @@ import marscolony.Equipment.*;
 import java.util.List;
 public class Research extends Mission {
     
-     public Research(/*Facility laboratory*/ int duration) {
+     public Research(Facilities laboratory, int duration) {
         super("Research", duration);
-        //setTarget(laboratory);
+        setTarget(laboratory);
     }
 
     @Override
@@ -28,8 +28,10 @@ public class Research extends Mission {
 
     @Override
     public List<Capability> getRequiredCapabilities() {
-         throw new UnsupportedOperationException("TODO");
-    //until writing body
+         List <Capability> list=new ArrayList<>();
+         list.add(Capability.SCIENCE);
+         return list;
+
     }
 
 
@@ -37,7 +39,7 @@ public class Research extends Mission {
      public String getEnvironmentProblem(EnvironmentCondition env) {
      
         if (env == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
-            return "Rescue needs communication but it is disrupted";
+            return "Research needs communication but it is disrupted";
         }
         else
             return null;
