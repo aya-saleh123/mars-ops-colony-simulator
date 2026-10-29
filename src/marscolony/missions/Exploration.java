@@ -2,13 +2,26 @@ package marscolony.missions;
 import java.util.List;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
+import marscolony.personnel.*;
+import marscolony.facilities.Facilities;
 
 public class Exploration extends Mission {
     private String destination;
+    private ExplorationRover rover;
+    private MissionState state;
 
     public Exploration(String name, int missionDuration, String destination) {
         super(name, missionDuration);
         this.destination = destination;
+        this.state = MissionState.PENDING;
+    }
+
+    public ExplorationRover getRover() {
+        return rover;
+    }
+
+    public void setState(MissionState state) {
+        this.state = state;
     }
    
    @Override

@@ -12,10 +12,18 @@ public class RepairRobot extends RoboticUnit {
         // Implementation for repairing equipment
     }
 
+    
+
+    public void repairRover() {
+        decBatteryLevel();
+        System.out.println("Repair Robot " + getIdNumber() + " is repairing the rover.");
+    }
+
     @Override
     public void assignMission(EnvironmentCondition condition) {
         if (isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
             System.out.println("Assigning repair mission to Repair Robot " + getIdNumber());
+            this.setAvailable(false);
         } else {
             System.out.println("Repair Robot " + getIdNumber() + " is currently unavailable for missions.");
         }
