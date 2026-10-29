@@ -1,5 +1,4 @@
 package marscolony.conditions;
-
 import java.util.ArrayList;
 import java.util.List;
 import marscolony.missions.*;
