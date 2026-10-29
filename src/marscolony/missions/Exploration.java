@@ -1,40 +1,42 @@
 package marscolony.missions;
 import java.util.List;
+import java.util.ArrayList;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
 import marscolony.personnel.*;
-import marscolony.facilities.Facilities;
+import marscolony.missions.FailureReason;
+
 
 public class Exploration extends Mission {
     private String destination;
-    private ExplorationRover rover;
-    private MissionState state;
 
     public Exploration(String name, int missionDuration, String destination) {
         super(name, missionDuration);
         this.destination = destination;
-        this.state = MissionState.PENDING;
     }
 
     public ExplorationRover getRover() {
-        return rover;
-    }
-
-    public void setState(MissionState state) {
-        this.state = state;
+       for(Agent a:getAgents()){
+        if(a instanceof ExplorationRover)
+            return (ExplorationRover) a;
+       }
+       return null;
     }
    
    @Override
    public int getRequiredAmount(ResourceType type) {
-    throw new UnsupportedOperationException("TODO");
-    //until writing body
+    if(type==ResourceType.FUEL)
+        return 10;
+    else 
+        return 0;
    }
 
      @Override
     public List<Capability> getRequiredCapabilities() {
-     throw new UnsupportedOperationException("TODO");
-    //until writing body
-
+     List<Capability> list=new ArrayList<>();
+     list.add(Capability.SURFACE_TRAVEL);
+     list.add(Capability.SCIENCE);
+     return list;
     }
     
     @Override 
@@ -49,10 +51,18 @@ public class Exploration extends Mission {
         return destination;
     }
 
+    @Override
+    protected void Completed(){
+        System.out.println("Region "+ destination +" explored");
+    } 
 
-       
+    @Override 
+    public void acceptMission(){
+        super.acceptMission();
+        for(Agent a: getAgents())
+            a.setLocation("Martian Surface");
+    }
 
-    
       
 }
 
