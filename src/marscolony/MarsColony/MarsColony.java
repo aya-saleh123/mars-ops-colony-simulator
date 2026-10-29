@@ -201,14 +201,19 @@ public class MarsColony {
                 return true;
             } else if (mission instanceof Exploration) {
                 if (mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL)) {
-                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
+                    return false;
+                }
+                if(currentCondition == EnvironmentCondition.DUST_STORM )
+                {
+                    mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
                     return false;
                 }
                 if (!((Exploration) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
-                
+
                 mission.acceptMission();
                 activeMission = mission;
                 return true;
