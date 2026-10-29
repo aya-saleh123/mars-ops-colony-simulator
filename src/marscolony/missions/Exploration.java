@@ -1,7 +1,5 @@
 package marscolony.missions;
 import java.util.List;
-import marscolony.ArrayList;
-
 import marscolony.Equipment.Equipment;
 import marscolony.Equipment.EquipmentType;
 import marscolony.MarsColony.MarsColony;

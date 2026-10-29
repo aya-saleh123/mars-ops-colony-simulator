@@ -1,5 +1,4 @@
 package marscolony.emergencies;
-
 import java.util.ArrayList;
 import java.util.List;
 import marscolony.facilities.*;
@@ -15,13 +14,13 @@ public class Fire extends Emergency {
     MedicalEmergency medicalEmergency;
     boolean availableFirefighterFound = false;
     boolean availableMedicalOfficerFound = false;
-
+    Habitat medicalHabitat;
     public Fire(Laboratory lab) {
         super(lab);
         lab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
         int lost = lab.removeUpTo(ResourceType.OXYGEN, 50);
         System.out.println("Fire consumed " + lost + " oxygen in " + lab.getLocationName());
-        medicalEmergency = new MedicalEmergency(lab, patients);
+        medicalEmergency = new MedicalEmergency(lab, medicalHabitat, patients);
         damageEquipment(lab);
 
     }
@@ -78,6 +77,11 @@ public class Fire extends Emergency {
         if (!availableFirefighterFound && !availableMedicalOfficerFound) {
             status = EmergencyStatus.UNRESOLVED;
             System.out.println("No available Firefighter or Medical Officer to respond to the fire emergency.");
+        }
+        else {
+            status = EmergencyStatus.RESOLVED;
+            getFacility().setOperationalStatus(FacilityStatus.OPERATIONAL);
+            System.out.println("Fire emergency resolved.");
         }
 
     }

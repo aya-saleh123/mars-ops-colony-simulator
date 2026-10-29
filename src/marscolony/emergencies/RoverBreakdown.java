@@ -1,7 +1,4 @@
 package marscolony.emergencies;
-
-import java.util.List;
-
 import marscolony.facilities.Facilities;
 import marscolony.missions.Capability;
 import marscolony.personnel.*;
@@ -73,6 +70,7 @@ public class RoverBreakdown extends Emergency {
         respondToEmergency();
     }
 
+    @Override 
     public void respondToEmergency() {
         for (Agent a : getResponders()) {
             if (a.getClass() == Engineer.class) {
@@ -84,9 +82,10 @@ public class RoverBreakdown extends Emergency {
                 repairRobot.repairRover();
             }
         }
+
     }
 
-    public void roverRepaired() {
+    public void roverRepaired() { //me4 fahma 7aga 
         if (!MarsColony.deductResourceFromFacilities(ResourceType.SPARE_PARTS, 5)) {
             System.out.println("Rover Breakdown Emergency is unresolved due to insufficient amount of spare parts.");
             status = EmergencyStatus.UNRESOLVED;

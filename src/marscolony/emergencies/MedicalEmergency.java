@@ -1,10 +1,9 @@
 package marscolony.emergencies;
-
 import java.util.List;
-import marscolony.facilities.Facilities;
+import marscolony.facilities.*;
 import marscolony.facilities.FacilityStatus;
 import marscolony.personnel.*;
-import marscolony.resources.ResourceType;
+import marscolony.resources.*;
 import marscolony.missions.*;
 import marscolony.MarsColony.MarsColony;
 
@@ -14,10 +13,12 @@ public class MedicalEmergency extends Emergency {
    boolean availableOperationalFacilityFound = false;
    boolean availableMedicalSuppliesFound = false;
    EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
+   Habitat medicalHabitat;
 
-   public MedicalEmergency(Facilities facility, List<Human> patients) {
-      super(facility);
+   public MedicalEmergency(Facilities medEmergFacility,Habitat medicalHabitat, List<Human> patients) {
+      super(medEmergFacility);
       this.patients = patients;
+      this.medicalHabitat = medicalHabitat;
    }
 
    @Override 
@@ -43,8 +44,9 @@ public class MedicalEmergency extends Emergency {
    public void respondToEmergency() {
       for (Agent a : getResponders()) {
 
-         if (a.isAvailable() && a.getClass() == MedicalOfficer.class && getFacility()
-               .getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL /* && medicalsupplies available */) {
+         if (a.isAvailable() && a.getClass() == MedicalOfficer.class && 
+         medicalHabitat.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL 
+         && getFacility().getResourceCount(ResourceType.MEDICAL_SUPPLIES) > 0) {
             availableMedicalOfficerFound = true;
             availableOperationalFacilityFound = true;
             availableMedicalSuppliesFound = true;
@@ -66,6 +68,11 @@ public class MedicalEmergency extends Emergency {
          status = EmergencyStatus.UNRESOLVED;
          System.out.println("No available medical supplies to respond to the medical emergency.");
       }
-      status = EmergencyStatus.RESOLVED; //check later if this is correct, maybe we need to check if the patients are healthy or not
+      else{
+         getFacility().setOperationalStatus(FacilityStatus.OPERATIONAL);
+         System.out.println("Medical emergency resolved.");
+         status = EmergencyStatus.RESOLVED;
+     //check later if this is correct, maybe we need to check if the patients are healthy or not
    }
+}
 }
