@@ -15,7 +15,7 @@ public class MarsColony {
     // Related to stimulation part
     private static int colonyTime = 0;
     private static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
-    private static List<Mission> missions;
+    private static List<Mission> missions = new ArrayList<>();
     private static Mission activeMission = null;
 
     private static List<Facilities> facilities = new ArrayList<>();
@@ -158,6 +158,7 @@ public class MarsColony {
                     return false;
                 }
 
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
 
@@ -176,6 +177,7 @@ public class MarsColony {
                     return false;
                 }
 
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Rescue) {
@@ -191,6 +193,8 @@ public class MarsColony {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
+
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Exploration) {
@@ -202,6 +206,8 @@ public class MarsColony {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
+                
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             }

@@ -63,7 +63,7 @@ public abstract class Mission {
 
     public void acceptMission() {
         if (state != MissionState.PENDING)
-            throw new IllegalStateException("you can only assign a pending mission ");
+            throw new IllegalStateException("you can only accept a pending mission ");
         else
             state = MissionState.ASSIGNED;
         System.out.println("Mission is accepted ");
