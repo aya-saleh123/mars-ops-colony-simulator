@@ -77,7 +77,7 @@ public class RoverBreakdown extends Emergency {
             return;
         }
 
-        if (MarsColony.getTotalResourceCount(ResourceType.SPARE_PARTS) < SPARE_PARTS_COST) {
+        if (!MarsColony.deductResourceFromFacilities(ResourceType.SPARE_PARTS, SPARE_PARTS_COST)) {
             setReason(FailureReason.INSUFFICIENT_RESOURCES);
             setStatus(EmergencyStatus.UNRESOLVED);
             return;

@@ -23,7 +23,12 @@ public class MedicalEmergency extends Emergency {
    public MedicalEmergency(Facilities incidentFacility, Habitat medicalHabitat, List<Human> patients) {
       super(incidentFacility);
       this.medicalHabitat = medicalHabitat;
-      this.patients = patients;
+      if (patients == null) {
+         this.patients = new ArrayList<>();
+      }
+      else {
+         this.patients = new ArrayList<>(patients);
+      }
    }
 
    @Override
@@ -31,7 +36,8 @@ public class MedicalEmergency extends Emergency {
       medicalOfficer = null;
 
       if (patients.isEmpty()) {
-
+         setReason(FailureReason.NONE);
+         setStatus(EmergencyStatus.RESOLVED);
          return;
       }
 
@@ -68,7 +74,7 @@ public class MedicalEmergency extends Emergency {
 
    @Override
    public void respondToEmergency() {
-      if (medicalOfficer == null) {
+      if (medicalOfficer == null || medicalOfficer.canPerform(Capability.MEDICAL)) {
          setReason(FailureReason.UNAVAILABLE_PERSONNEL);
          setStatus(EmergencyStatus.UNRESOLVED);
          return;
@@ -92,8 +98,6 @@ public class MedicalEmergency extends Emergency {
          patient.decFatigueLevel();
          medicalOfficer.medicalAssist(patient);
       }
-
-      medicalOfficer.justFinished();
 
       setStatus(EmergencyStatus.RESOLVED);
       setReason(FailureReason.NONE);
