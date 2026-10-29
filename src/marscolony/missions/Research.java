@@ -26,26 +26,6 @@ public class Research extends Mission {
         return 0;
     }
 
-    @Override
-    public List<Capability> getRequiredCapabilities() {
-         List <Capability> list=new ArrayList<>();
-         list.add(Capability.SCIENCE);
-         return list;
-
-    }
-
-
-
-     public String getEnvironmentProblem(EnvironmentCondition env) {
-     
-        if (env == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
-            return "Research needs communication but it is disrupted";
-        }
-        else
-            return null;
-    
-    }
-
 
     @Override 
     public boolean checkRequiredForMission()

@@ -4,18 +4,23 @@ import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.personnel.*;
 import marscolony.facilities.Facilities;
+import marscolony.facilities.FacilityStatus;
+import marscolony.facilities.Habitat;
+import marscolony.facilities.Laboratory;
+
 import java.util.List;
 import java.util.ArrayList;
 
 public class Rescue extends Mission{
-    private Agent rescuedAgent;
-    private Facilities targetLocation;
+    private Agent inCrisisAgent;
+    private String rescueLocation;
+    private String safeLocation;
 
-    public Rescue(String name, int missionDuration , Agent rescuedAgent, Facilities targetLocation) {
+    public Rescue(String name, int missionDuration , Agent inCrisisAgent) {
         super(name, missionDuration);
-        this.rescuedAgent = rescuedAgent;
-        this.targetLocation = targetLocation;
-        setTarget(targetLocation);
+        this.inCrisisAgent = inCrisisAgent;
+        this.rescueLocation = inCrisisAgent.getLocation();
+        this.setSafeLocation();
     }
     
     @Override
@@ -25,31 +30,11 @@ public class Rescue extends Mission{
         else return 0;
     }
 
-    @Override
-    public List<Capability> getRequiredCapabilities() {
-     List<Capability> capRescue=new ArrayList<>();
-         capRescue.add(Capability.SURFACE_TRAVEL);
-         capRescue.add(Capability.MEDICAL);
-         return capRescue;
-    }
-
-     @Override
-    public String getEnvironmentProblem(EnvironmentCondition env) {
-        if (env == EnvironmentCondition.DUST_STORM) {
-            return "Surface operations are not allowed during a dust storm";
-        }
-       else if (env == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
-            return "Rescue needs communication but it is disrupted";
-        }
-        else
-            return null;
-    
-    }
       @Override
     protected void Completed() {
-      rescuedAgent.setLocation(targetLocation.getLocationName());
-      System.out.println(rescuedAgent.getIdNumber()+" rescued and brought to "+ targetLocation.getLocationName());
-
+        super.Completed();
+        inCrisisAgent.setLocation(safeLocation);
+        System.out.println(inCrisisAgent.getIdNumber() +" has been rescued and brought to "+ safeLocation);
      }
 
 
@@ -85,7 +70,32 @@ public class Rescue extends Mission{
         }
     }
 
+    private void setSafeLocation()
+    {
+        int flag =0;
+        for(Facilities facility : MarsColony.getFacilities())
+            {
+                if(facility instanceof Habitat)
+                {
+                    if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
+                    {
+                        this.safeLocation = facility.getLocationName();
+                        flag = 1;
+                        break;
+                    }
+                }
+            }
 
+            if(flag == 0)
+            {
+                this.safeLocation = "Safe Martian Surface";
+            }
+    }
+
+    public String getSafeLocation()
+    {
+        return safeLocation;
+    }
 
 
 }

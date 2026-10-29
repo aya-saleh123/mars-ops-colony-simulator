@@ -38,28 +38,12 @@ public class Exploration extends Mission {
         return 0;
    }
 
-     @Override
-    public List<Capability> getRequiredCapabilities() {
-     List<Capability> list=new ArrayList<>();
-     list.add(Capability.SURFACE_TRAVEL);
-     list.add(Capability.SCIENCE);
-     return list;
-    }
-    
-    @Override 
-    public  String getEnvironmentProblem(EnvironmentCondition env) {
-        if(env==EnvironmentCondition.DUST_STORM)
-            return "Surface operations are not allowed during a dust storm";
-        else
-          return null;
-    }
-
     public String getDestination() {
         return destination;
     }
 
     @Override 
-    public boolean checkRequiredForMission() // He says req scientific skills??????
+    public boolean checkRequiredForMission()
     {
         boolean robotStatus = false , equipmentStatus = false ,humanStatus = false  ;
 

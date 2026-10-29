@@ -2,9 +2,11 @@ package marscolony.missions;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
-import marscolony.personnel.Agent;
+import marscolony.personnel.*;
 import marscolony.facilities.*;
 
 public abstract class Mission {
@@ -25,13 +27,25 @@ public abstract class Mission {
         this.reasonOfFailure = FailureReason.NONE;
     }
 
-    public abstract List<Capability> getRequiredCapabilities();
-
     public abstract int getRequiredAmount(ResourceType type);
 
-    public abstract String getEnvironmentProblem(EnvironmentCondition env);
-
     protected void Completed() {
+        for(Agent agent : agents)
+        {
+            if(agent instanceof Human)
+            {
+                ((Human)agent).incFatigueLevel();
+            }
+            else if(agent instanceof RoboticUnit)
+            {
+                ((RoboticUnit)agent).incBatteryLevel();
+            }
+        }
+        this.setState(MissionState.COMPLETED);
+        this.releaseAgents();
+        MarsColony.activeMission = null;
+
+
     }
 
     public void assignAgent(Agent a) {
@@ -75,6 +89,7 @@ public abstract class Mission {
         state = MissionState.FAILED;
         reasonOfFailure = reason;
         releaseAgents();
+        MarsColony.activeMission = null;
         System.out.println("Mission is failed due to " + reason);
     }
 
@@ -95,8 +110,6 @@ public abstract class Mission {
         {
             elapsed++;
             if (elapsed >= missionDuration) {
-                this.state = MissionState.COMPLETED;
-                releaseAgents();
                 Completed();
                 System.out.println("Mission Completed Successfully");
             }
@@ -113,36 +126,6 @@ public abstract class Mission {
 
     public String getName() {
         return name;
-    }
-
-    public String checkAgents(List<Agent> agentsToCheck) {
-        for (Agent a : agentsToCheck) { // Aya: El 7eta di kolaha 3ala fekra 7atedrab error 3alafekra, kalemini
-            if (!a.canPerform(getRequiredCapabilities().get(0))) { // BE CAREFUL!!!!!! Assuming the first capability is
-                                                                   // representative of the required capabilities
-                return "Agent " + a.getIdNumber() + " does not have the required capability";
-            }
-            if (a.isAvailable() == false) {
-                return "Agent " + a.getIdNumber() + " is not available";
-            }
-        }
-        for (Capability c : getRequiredCapabilities()) {
-            int req = 0;
-            int actual = 0;
-            for (Capability x : getRequiredCapabilities()) {
-                if (x == c) {
-                    req++;
-                }
-            }
-            for (Agent a : agentsToCheck) {
-                if (a.getSkill() == c) {
-                    actual++;
-                }
-            }
-            if (actual < req) {
-                return "The agent does not have this capability" + c;
-            }
-        }
-        return null;
     }
 
     public abstract boolean checkRequiredForMission();
@@ -170,5 +153,11 @@ public abstract class Mission {
     public MissionState getState() {
         return state;
     }
+
+    public void setState(MissionState state) {
+        this.state = state;
+    }
+
+    
 
 }

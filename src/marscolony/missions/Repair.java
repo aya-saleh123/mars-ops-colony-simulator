@@ -29,29 +29,12 @@ public class Repair extends Mission {
             return 0;
 
     }
-    
-     public  List<Capability> getRequiredCapabilities() {
-         List<Capability> capRepair=new ArrayList<>();
-         capRepair.add(Capability.REPAIR);
-         capRepair.add(Capability.REPAIR);
-         return capRepair;
-     }
 
     @Override
     protected void Completed() { 
         facilityToRepair.repairFacility();;
         System.out.println(facilityToRepair.getLocationName()+" is repaired");
      }
-
-      @Override
-    public String getEnvironmentProblem(EnvironmentCondition env) {
-        if (env == EnvironmentCondition.DUST_STORM) {
-            return "Surface operations are not allowed during a dust storm";
-        }
-      
-    else return null;
-    }
-
 
     @Override 
     public boolean checkRequiredForMission()
@@ -62,7 +45,7 @@ public class Repair extends Mission {
             humanStatus = human.canPerform(Capability.REPAIR); 
             if(humanStatus)
             {
-                this.assignAgent(human);;
+                this.assignAgent(human);
                 break;
             }
         }
@@ -72,7 +55,7 @@ public class Repair extends Mission {
             robotStatus = robot.canPerform(Capability.REPAIR);
             if(robotStatus)
             {
-                this.assignAgent(robot);;
+                this.assignAgent(robot);
                 break;
             }
         }
