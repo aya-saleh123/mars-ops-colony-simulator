@@ -57,7 +57,8 @@ public class Exploration extends Mission {
     public String getDestination() {
         return destination;
     }
-
+    
+    @Override 
     public boolean checkRequiredForMission() // He says req scientific skills??????
     {
         boolean robotStatus = false , equipmentStatus = false ,labStatus = false  ;

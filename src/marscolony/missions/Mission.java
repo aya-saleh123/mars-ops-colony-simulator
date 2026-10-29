@@ -35,19 +35,29 @@ public abstract class Mission {
     }
 
     public void assignAgent(Agent a) {
+        if(agents.contains(a)){
+            System.out.println("Agent is already assigned to this mission");
+            return ;}
         if (a.isAvailable() == false)
-            throw new IllegalStateException("the agent " + a.getIdNumber() + " is not available");
+            throw new IllegalStateException("Agent " + a.getIdNumber() + " is not available");
         else
+        {
             a.setAvailable(false);
-        agents.add(a);
+            System.out.println("Agent " + a.getIdNumber() +" has been assigned to a mission");
+            agents.add(a);
+        }
 
     }
 
     public void releaseAgents() {
         for (Agent a : agents) {
             if (a.isAvailable() == false)
+            {
                 a.setAvailable(true);
+            }
+                
         }
+        agents.clear();
 
     }
 
@@ -90,12 +100,15 @@ public abstract class Mission {
             state = MissionState.IN_PROGRESS;
         }
 
-        elapsed++;
-        if (elapsed >= missionDuration) {
-            this.state = MissionState.COMPLETED;
-            releaseAgents();
-            Completed();
-            System.out.println("Mission Completed Successfully");
+        if(this.state == MissionState.IN_PROGRESS)
+        {
+            elapsed++;
+            if (elapsed >= missionDuration) {
+                this.state = MissionState.COMPLETED;
+                releaseAgents();
+                Completed();
+                System.out.println("Mission Completed Successfully");
+            }
         }
     }
 
@@ -121,7 +134,6 @@ public abstract class Mission {
                 return "Agent " + a.getIdNumber() + " is not available";
             }
         }
-
         for (Capability c : getRequiredCapabilities()) {
             int req = 0;
             int actual = 0;
@@ -141,6 +153,8 @@ public abstract class Mission {
         }
         return null;
     }
+
+    public abstract boolean checkRequiredForMission();
 
     public int getElapsed() {
         return elapsed;

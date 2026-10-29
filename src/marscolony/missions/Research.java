@@ -46,51 +46,54 @@ public class Research extends Mission {
             return null;
     
     }
-public boolean checkRequiredForMission()
-    {
-        boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
-        for(Human human : MarsColony.getHumans())
+
+    
+    @Override 
+    public boolean checkRequiredForMission()
         {
-            if(human instanceof Scientist)
+            boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
+            for(Human human : MarsColony.getHumans())
             {
-                humanStatus = human.canPerform(Capability.SCIENCE); 
-                if(humanStatus)
+                if(human instanceof Scientist)
                 {
-                    this.agents.add(human); // find a way to release if failed or succeeded
-                    break;
+                    humanStatus = human.canPerform(Capability.SCIENCE); 
+                    if(humanStatus)
+                    {
+                        this.agents.add(human); // find a way to release if failed or succeeded
+                        break;
+                    }
+                }
+                
+            }
+            for(Equipment equipment : MarsColony.getEquipments() )
+            {
+                if( equipment.getType() == EquipmentType.SCIENTIFIC_EQUIPMENT && equipment.isOperationalStatus())
+                {
+                    equipmentStatus = true;
                 }
             }
+
+            for(Facilities facility : MarsColony.getFacilities())
+            {
+                if(facility instanceof Laboratory)
+                {
+                    if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
+                    {
+                        labStatus = true;
+                        break;
+                    }
+                }
+            }
+
             
-        }
-        for(Equipment equipment : MarsColony.getEquipments() )
-        {
-            if( equipment.getType() == EquipmentType.SCIENTIFIC_EQUIPMENT && equipment.isOperationalStatus())
+            if(humanStatus && equipmentStatus && labStatus){
+                return true;
+            }
+            else
             {
-                equipmentStatus = true;
+                releaseAgents();
+                return false;
             }
         }
-
-        for(Facilities facility : MarsColony.getFacilities())
-        {
-            if(facility instanceof Laboratory)
-            {
-                if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
-                {
-                    labStatus = true;
-                    break;
-                }
-            }
-        }
-
-        
-        if(humanStatus && equipmentStatus && labStatus){
-            return true;
-        }
-        else
-        {
-            releaseAgents();
-            return false;
-        }
-    }
 
 }

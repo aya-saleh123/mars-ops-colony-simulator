@@ -53,7 +53,7 @@ public class Rescue extends Mission{
      }
 
 
-
+     @Override 
      public boolean checkRequiredForMission()
     {
         boolean humanStatus = false , robotStatus = false ;

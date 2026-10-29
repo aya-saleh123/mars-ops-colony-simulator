@@ -52,6 +52,8 @@ public class Repair extends Mission {
     else return null;
     }
 
+
+    @Override 
     public boolean checkRequiredForMission()
     {
         boolean humanStatus = false , robotStatus = false ;
@@ -62,7 +64,7 @@ public class Repair extends Mission {
                 humanStatus = human.canPerform(Capability.REPAIR); 
                 if(humanStatus)
                 {
-                    this.agents.add(human);
+                    this.assignAgent(human);;
                     break;
                 }
             }
@@ -74,7 +76,7 @@ public class Repair extends Mission {
                 robotStatus = robot.canPerform(Capability.REPAIR);
                 if(robotStatus)
                 {
-                    this.agents.add(robot);
+                    this.assignAgent(robot);;
                     break;
                 }
             }
