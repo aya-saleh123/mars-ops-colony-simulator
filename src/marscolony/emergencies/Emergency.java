@@ -2,16 +2,22 @@ package marscolony.emergencies;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import marscolony.facilities.Facilities;
 import marscolony.personnel.Agent;
+import marscolony.missions.*;
 
 public abstract class Emergency {
     private Facilities facility;
     private List<Agent> responders = new ArrayList<>();
+    protected EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
+    protected FailureReason failReason = null;
 
-    public Emergency(Facilities facility) {
+    protected Emergency(Facilities facility) {
         this.facility = facility;
+    }
+
+    public void triggerEmergency() {
+        System.out.println("Emergency: " + getClass().getSimpleName() + " at " + facility.getLocationName());
     }
 
     public Facilities getFacility() {

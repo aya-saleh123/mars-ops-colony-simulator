@@ -8,7 +8,6 @@ import marscolony.missions.Exploration;
 import marscolony.missions.FailureReason;
 
 public class RoverBreakdown extends Emergency {
-    EmergencyStatus status = EmergencyStatus.IN_PROGRESS;
     Boolean availableEngineerFound = false;
     Boolean availableRepairRobotFound = false;
     ExplorationRover brokenRover;

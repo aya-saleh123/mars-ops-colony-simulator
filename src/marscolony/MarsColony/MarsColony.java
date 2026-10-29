@@ -9,6 +9,7 @@ import marscolony.personnel.*;
 import marscolony.missions.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MarsColony {
     // Related to stimulation part
@@ -22,7 +23,6 @@ public class MarsColony {
     private static List<RoboticUnit> robots = new ArrayList<>();
     private static List<Equipment> equipments = new ArrayList<>();
 
-
     public static void addEquipement(Equipment equipment) {
         equipments.add(equipment);
     }
@@ -30,7 +30,6 @@ public class MarsColony {
     public static List<Equipment> getEquipments() {
         return equipments;
     }
-
 
     public static void addHuman(Human human) {
         crewMembers.add(human);
@@ -136,30 +135,25 @@ public class MarsColony {
     }
 
     // handling on mission at a time
-public boolean startMission(Mission mission) //ask aya about emergency && remember to ask ABOUT BATTERY
-{
+    public boolean startMission(Mission mission) // ask aya about emergency && remember to ask ABOUT BATTERY
+    {
         missions.add(mission);
-        if(activeMission!=null)
-        {
+        if (activeMission != null) {
             mission.rejectMission(FailureReason.ANOTHER_ACTIVE_MISSION);
             return false;
-        }
-        else
-        {
-            if(mission instanceof Repair)
-            {
-                if(mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(ResourceType.BATTERY_POWER))
-                {
+        } else {
+            if (mission instanceof Repair) {
+                if (mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(
+                        ResourceType.BATTERY_POWER)) {
                     mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
                     return false;
                 }
-                if(mission.getRequiredAmount(ResourceType.SPARE_PARTS) > getTotalResourceCount(ResourceType.SPARE_PARTS))
-                {
+                if (mission.getRequiredAmount(ResourceType.SPARE_PARTS) > getTotalResourceCount(
+                        ResourceType.SPARE_PARTS)) {
                     mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
                     return false;
                 }
-                if(!((Repair)mission).checkRequiredForMission())
-                {
+                if (!((Repair) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
@@ -167,57 +161,44 @@ public boolean startMission(Mission mission) //ask aya about emergency && rememb
                 activeMission = mission;
                 return true;
 
-            }
-            else if(mission instanceof Research)
-            {
-                if(mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(ResourceType.BATTERY_POWER))
-                {
+            } else if (mission instanceof Research) {
+                if (mission.getRequiredAmount(ResourceType.BATTERY_POWER) > getTotalResourceCount(
+                        ResourceType.BATTERY_POWER)) {
                     mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
                     return false;
                 }
-                if(mission.getRequiredAmount(ResourceType.WATER) > getTotalResourceCount(ResourceType.WATER))
-                {
+                if (mission.getRequiredAmount(ResourceType.WATER) > getTotalResourceCount(ResourceType.WATER)) {
                     mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
                     return false;
                 }
-                if(!((Research)mission).checkRequiredForMission())
-                {
+                if (!((Research) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
 
                 activeMission = mission;
                 return true;
-            }
-            else if(mission instanceof Rescue)
-            {
-                if(currentCondition == EnvironmentCondition.COMMUNICATION_DISRUPTION )
-                {
+            } else if (mission instanceof Rescue) {
+                if (currentCondition == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
                     mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
                     return false;
                 }
-                if(mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL))
-                {
+                if (mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL)) {
                     mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
                     return false;
                 }
-                if(!((Rescue)mission).checkRequiredForMission())
-                {
+                if (!((Rescue) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
                 activeMission = mission;
                 return true;
-            }
-            else if(mission instanceof Exploration )
-            {
-                if(mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL))
-                {
+            } else if (mission instanceof Exploration) {
+                if (mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL)) {
                     mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
                     return false;
                 }
-                if(!((Exploration)mission).checkRequiredForMission())
-                {
+                if (!((Exploration) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
