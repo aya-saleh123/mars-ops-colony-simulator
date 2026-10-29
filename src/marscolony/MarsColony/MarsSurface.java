@@ -1,0 +1,14 @@
+package marscolony.MarsColony;
+
+public enum MarsSurface {
+    OLYMPUS_MONS,
+    VALLES_MARINERIS,
+    GALE_CRATER,
+    JEZERO_CRATER,
+    HELLAS_PLANITIA,
+    ELYSIUM_PLANITIA,
+    THARSIS_PLATEAU,
+    ARCADIA_PLANITIA,
+    CRIMSON_VALLEY,
+    PHOENIX_BASIN
+}

@@ -1,22 +1,16 @@
 package marscolony.missions;
 import marscolony.MarsColony.MarsColony;
-import marscolony.conditions.EnvironmentCondition;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
 import marscolony.facilities.Laboratory;
-import marscolony.personnel.Engineer;
 import marscolony.personnel.Human;
-import marscolony.personnel.RepairRobot;
-import marscolony.personnel.RoboticUnit;
-import marscolony.personnel.Scientist;
 import marscolony.resources.ResourceType;
 import marscolony.Equipment.*;
-import java.util.ArrayList;
-import java.util.List;
+
 public class Research extends Mission {
-    
-     public Research(int duration) {
-        super("Research", duration);
+    Human researcher;
+     public Research(String name,int duration) {
+        super(name, duration);
     }
 
     @Override
@@ -27,7 +21,7 @@ public class Research extends Mission {
     }
 
 
-    @Override 
+   /*  @Override 
     public boolean checkRequiredForMission()
         {
             boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
@@ -37,8 +31,10 @@ public class Research extends Mission {
                     if(humanStatus)
                     {
                         this.assignAgent(human);
+                        this.researcher = human;
                         break;
                     }
+                   
             }
             for(Equipment equipment : MarsColony.getEquipments() )
             {
@@ -60,7 +56,6 @@ public class Research extends Mission {
                     }
                 }
             }
-
             
             if(humanStatus && equipmentStatus && labStatus){
                 return true;
@@ -70,6 +65,79 @@ public class Research extends Mission {
                 releaseAgents();
                 return false;
             }
-        }
+        }*/
+   @Override
+   public boolean checkRequiredForMission() {
+       if (getMissionFailureReason() != FailureReason.NONE) {
+           return false;
+       }
+       for (Human human : MarsColony.getHumans()) {
+           if (human.isAvailable()&& human.canPerform(Capability.SCIENCE)) {
+               assignAgent(human);
+               break;
+           }
+       }
+       for (Facilities facility : MarsColony.getFacilities()) {
+           if (facility instanceof Laboratory && facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL) {
+               setTarget(facility);
+               break;
+           }
+       }
+
+       return true;
+   }
+    @Override 
+   public FailureReason getMissionFailureReason() {
+       boolean availableHumanExists = false;
+       boolean suitableHumanExists = false;
+       boolean equipmentStatus = false;
+       boolean labStatus = false;
+
+       for (Human human : MarsColony.getHumans()) {
+           if (human.isAvailable()) {
+               availableHumanExists = true;
+           if (human.canPerform(Capability.SCIENCE)) {
+                   suitableHumanExists = true;
+               }
+           }
+       }
+
+       if (!availableHumanExists) {
+           return FailureReason.UNAVAILABLE_PERSONNEL;
+       }
+
+       if (!suitableHumanExists) {
+           return FailureReason.UNSUITABLE_AGENT;
+       }
+
+       for (Equipment equipment : MarsColony.getEquipments()) {
+           if (equipment.getType() == EquipmentType.SCIENTIFIC_EQUIPMENT && equipment.isOperationalStatus()) {
+               equipmentStatus = true;
+               break;
+           }
+       }
+
+       if (!equipmentStatus) {
+           return FailureReason.EQUIPMENT_FAILURE;
+       }
+
+       for (Facilities facility : MarsColony.getFacilities()) {
+           if (facility instanceof Laboratory && facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL) {
+               labStatus = true;
+               break;
+           }
+       }
+       if (!labStatus) {
+           return FailureReason.UNAVAILABLE_FACILITIES;
+       }
+       return FailureReason.NONE;
+   }
+
+   public void completed() {
+       super.Completed();
+       System.out.println(this.researcher.getName() + " has completed the research mission successfully at "
+               + getTarget().getLocationName());
+
+   }
 
 }

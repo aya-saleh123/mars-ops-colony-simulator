@@ -12,18 +12,15 @@ import java.util.List;
 
 public class MarsColony {
     // Related to stimulation part
-
-    //why the fuck is everything private!
+    
     private static int colonyTime = 0;
     public static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
     private static List<Mission> missions = new ArrayList<>();
     public static Mission activeMission = null;
-
     private static List<Facilities> facilities = new ArrayList<>();
     private static List<Human> crewMembers = new ArrayList<>();
     private static List<RoboticUnit> robots = new ArrayList<>();
     private static List<Equipment> equipments = new ArrayList<>();
-
     public static void addEquipement(Equipment equipment) {
         equipments.add(equipment);
     }
@@ -163,7 +160,7 @@ public class MarsColony {
                     return false;
                 }
                 if (!((Repair) mission).checkRequiredForMission()) {
-                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                    mission.fail(mission.getMissionFailureReason());
                     return false;
                 }
 
@@ -190,7 +187,7 @@ public class MarsColony {
                     return false;
                 }
                 if (!((Research) mission).checkRequiredForMission()) {
-                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                      mission.fail(mission.getMissionFailureReason());
                     return false;
                 }
 
@@ -210,7 +207,7 @@ public class MarsColony {
                     return false;
                 }
                 if (!((Rescue) mission).checkRequiredForMission()) {
-                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                    mission.fail(mission.getMissionFailureReason());
                     return false;
                 }
 
@@ -229,7 +226,7 @@ public class MarsColony {
                     return false;
                 }
                 if (!((Exploration) mission).checkRequiredForMission()) {
-                    mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
+                      mission.fail(mission.getMissionFailureReason());
                     return false;
                 }
 

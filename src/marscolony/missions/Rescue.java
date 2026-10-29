@@ -6,21 +6,25 @@ import marscolony.personnel.*;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
 import marscolony.facilities.Habitat;
-import marscolony.facilities.Laboratory;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class Rescue extends Mission{
     private Agent inCrisisAgent;
     private String rescueLocation;
     private String safeLocation;
 
-    public Rescue(String name, int missionDuration , Agent inCrisisAgent) {
+    public Rescue(String name,int missionDuration , Agent inCrisisAgent) {
         super(name, missionDuration);
         this.inCrisisAgent = inCrisisAgent;
         this.rescueLocation = inCrisisAgent.getLocation();
         this.setSafeLocation();
+    }
+     public String getSafeLocation()
+    {
+        return safeLocation;
+    }
+    public String getRescueLocation()
+    {
+        return rescueLocation;
     }
     
     @Override
@@ -38,7 +42,7 @@ public class Rescue extends Mission{
      }
 
 
-     @Override 
+    /* @Override 
      public boolean checkRequiredForMission()
     {
         boolean humanStatus = false , robotStatus = false ;
@@ -68,7 +72,7 @@ public class Rescue extends Mission{
             releaseAgents();
             return false;
         }
-    }
+    }*/
 
     private void setSafeLocation()
     {
@@ -91,11 +95,80 @@ public class Rescue extends Mission{
                 this.safeLocation = "Safe Martian Surface";
             }
     }
-
-    public String getSafeLocation()
-    {
-        return safeLocation;
+    @Override 
+public FailureReason getMissionFailureReason() {
+    if (MarsColony.getEnvCondition() == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
+        return FailureReason.ENVIRONMENTAL_CONDITIONS;
     }
+
+    boolean availableHumanExists = false;
+    boolean suitableHumanExists = false;
+    boolean availableRobotExists = false;
+    boolean suitableRobotExists = false;
+    boolean lowBatteryAerialRobotExists = false;
+
+    for (Human human : MarsColony.getHumans()) {
+        if (human.isAvailable()) {
+            availableHumanExists = true;
+
+            if (human.canPerform(Capability.FIREFIGHTING)) {
+                suitableHumanExists = true;
+            }
+        }
+    }
+    for (RoboticUnit robot : MarsColony.getRobots()) {
+        if (robot.isAvailable()) {
+            availableRobotExists = true;
+
+            if (robot.canPerform(Capability.AERIAL)) {
+                suitableRobotExists = true;
+            }
+
+            if (robot.getSkill() == Capability.AERIAL && robot.isOperational() && robot.getBatteryLevel() == BatteryLevel.LOW) {
+                lowBatteryAerialRobotExists = true;
+            }
+        }
+    }
+
+    if (!availableHumanExists || !availableRobotExists) {
+        return FailureReason.UNAVAILABLE_PERSONNEL;
+    }
+
+    if (!suitableHumanExists) {
+        return FailureReason.UNSUITABLE_AGENT;
+    }
+
+    if (!suitableRobotExists) {
+        if (lowBatteryAerialRobotExists) {
+            return FailureReason.INSUFFICIENT_BATTERIES;
+        }
+        return FailureReason.UNSUITABLE_AGENT;
+    }
+
+    return FailureReason.NONE;
+}
+
+@Override
+public boolean checkRequiredForMission() {
+    if (getMissionFailureReason() != FailureReason.NONE) {
+        return false;
+    }
+    for (Human human : MarsColony.getHumans()) {
+        if (human.canPerform(Capability.FIREFIGHTING)) {
+            assignAgent(human);
+            break;
+        }
+    }
+    for (RoboticUnit robot : MarsColony.getRobots()) {
+        if (robot.canPerform(Capability.AERIAL)) {
+            assignAgent(robot);
+            break;
+        }
+    }
+
+    return true;
+}
+   
 
 
 }

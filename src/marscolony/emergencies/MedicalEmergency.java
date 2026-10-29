@@ -2,7 +2,6 @@ package marscolony.emergencies;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import marscolony.MarsColony.MarsColony;
 import marscolony.facilities.FacilityStatus;
 import marscolony.facilities.Facilities;

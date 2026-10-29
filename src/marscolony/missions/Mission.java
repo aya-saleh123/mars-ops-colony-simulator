@@ -1,32 +1,29 @@
 package marscolony.missions;
-
 import java.util.List;
 import java.util.ArrayList;
-
 import marscolony.MarsColony.MarsColony;
-import marscolony.conditions.EnvironmentCondition;
 import marscolony.resources.ResourceType;
 import marscolony.personnel.*;
 import marscolony.facilities.*;
 
 public abstract class Mission {
     private FailureReason reasonOfFailure;
-    private String name;
     private int elapsed;
     protected List<Agent> agents;
     private Facilities target;
     private int  missionDuration;
     private MissionState state;
+    private String name;
 
     public Mission(String name, int missionDuration) {
-        this.name = name;
         this.missionDuration = missionDuration;
         this.state = MissionState.PENDING;
         this.elapsed = 0;
         this.agents = new ArrayList<>();
+        this.name=name;
         this.reasonOfFailure = FailureReason.NONE;
     }
-
+    
     public abstract int getRequiredAmount(ResourceType type);
 
     protected void Completed() {
@@ -38,7 +35,7 @@ public abstract class Mission {
             }
             else if(agent instanceof RoboticUnit)
             {
-                ((RoboticUnit)agent).incBatteryLevel();
+                ((RoboticUnit)agent).decBatteryLevel();
             }
         }
         this.setState(MissionState.COMPLETED);
@@ -124,10 +121,6 @@ public abstract class Mission {
 
     }
 
-    public String getName() {
-        return name;
-    }
-
     public abstract boolean checkRequiredForMission();
 
     public int getElapsed() {
@@ -158,6 +151,9 @@ public abstract class Mission {
         this.state = state;
     }
 
-    
+    public String getName() {
+        return name;
+    } 
+    public abstract FailureReason getMissionFailureReason();
 
 }
