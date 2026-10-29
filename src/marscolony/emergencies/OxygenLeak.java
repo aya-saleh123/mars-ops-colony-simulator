@@ -4,7 +4,6 @@ import marscolony.personnel.*;
 import marscolony.resources.*;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.*;
-import marscolony.Equipment.Equipment;
 import marscolony.MarsColony.MarsColony;
 
 public class OxygenLeak extends Emergency {

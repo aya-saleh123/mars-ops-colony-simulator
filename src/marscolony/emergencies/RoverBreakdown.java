@@ -4,10 +4,8 @@ import marscolony.missions.Capability;
 import marscolony.personnel.*;
 import marscolony.resources.ResourceType;
 import marscolony.MarsColony.MarsColony;
-import marscolony.missions.MissionState;
 import marscolony.missions.Exploration;
 import marscolony.missions.FailureReason;
-import marscolony.conditions.EnvironmentCondition;
 
 public class RoverBreakdown extends Emergency {
     EmergencyStatus status = EmergencyStatus.IN_PROGRESS;

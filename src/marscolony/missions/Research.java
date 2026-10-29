@@ -11,7 +11,6 @@ import marscolony.personnel.RoboticUnit;
 import marscolony.personnel.Scientist;
 import marscolony.resources.ResourceType;
 import marscolony.Equipment.*;
-
 import java.util.ArrayList;
 import java.util.List;
 public class Research extends Mission {

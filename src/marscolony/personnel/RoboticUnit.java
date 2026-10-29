@@ -1,5 +1,4 @@
 package marscolony.personnel;
-
 import marscolony.MarsColony.MarsColony;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.missions.Capability;
