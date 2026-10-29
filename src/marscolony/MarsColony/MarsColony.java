@@ -9,7 +9,6 @@ import marscolony.personnel.*;
 import marscolony.missions.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MarsColony {
     // Related to stimulation part
