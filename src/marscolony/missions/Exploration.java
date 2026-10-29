@@ -57,11 +57,24 @@ public class Exploration extends Mission {
     public String getDestination() {
         return destination;
     }
-    
+
     @Override 
     public boolean checkRequiredForMission() // He says req scientific skills??????
     {
-        boolean robotStatus = false , equipmentStatus = false ,labStatus = false  ;
+        boolean robotStatus = false , equipmentStatus = false ,humanStatus = false  ;
+
+        for (Human human : MarsColony.getHumans()) {
+            if(human instanceof Scientist)
+            {
+                humanStatus = human.canPerform(Capability.SCIENCE); 
+                if(humanStatus)
+                {
+                    this.assignAgent(human);
+                    break;
+                }
+            }
+        }
+
         for(RoboticUnit robot : MarsColony.getRobots())
         {
             if(robot instanceof ExplorationRover)
@@ -69,7 +82,7 @@ public class Exploration extends Mission {
                 robotStatus = robot.canPerform(Capability.SURFACE_TRAVEL); 
                 if(robotStatus)
                 {
-                    this.agents.add(robot);
+                    this.assignAgent(robot);
                     break;
                 }
             }
@@ -85,7 +98,7 @@ public class Exploration extends Mission {
         }
 
         
-        if(robotStatus && equipmentStatus){
+        if(robotStatus && equipmentStatus && humanStatus){
             return true;
         }
         else
