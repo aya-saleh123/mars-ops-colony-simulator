@@ -85,7 +85,6 @@ public class Conditions {
     }
 
     System.out.println("Mission " + mission.getName() + " cannot start because of " + condition);
-
     if (mission.getState() == MissionState.IN_PROGRESS || mission.getState() == MissionState.PENDING || mission.getState() == MissionState.ASSIGNED) {
       mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
       // 34an el reject mission elli konna 3amlenha nafs el implementation beta3 fail fa fokek

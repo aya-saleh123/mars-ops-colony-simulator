@@ -25,12 +25,10 @@ public class Engineer extends Human {
     }
 
     public void repairRover() {
-        this.incFatigueLevel();
         System.out.println("Engineer " + getName() + " is repairing the rover.");
     }
 
     public void repairOxygenLeak() {
-        this.incFatigueLevel();
         System.out.println("Engineer " + getName() + " is repairing the oxygen leak.");
     }
 }

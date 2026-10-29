@@ -12,13 +12,11 @@ public class MedicalOfficer extends Human {
 
     public void medicalAssist(Human patient) {
         System.out.println("Medical Officer " + getName() + " is providing medical assistance.");
-        incHealthStat(patient);
     }
 
     private void incHealthStat(Human patient) {
        System.out.println("Medical Officer " + getName() + " is treating " + patient.getName());
        patient.improveHealth();
-       incFatigueLevel(); 
     }
 
     @Override
