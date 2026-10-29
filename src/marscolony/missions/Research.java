@@ -134,7 +134,7 @@ public class Research extends Mission {
    }
 
    public void completed() {
-       super.Completed();
+       super.completed();
        System.out.println(this.researcher.getName() + " has completed the research mission successfully at "
                + getTarget().getLocationName());
 

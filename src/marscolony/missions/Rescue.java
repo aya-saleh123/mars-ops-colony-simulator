@@ -35,8 +35,8 @@ public class Rescue extends Mission{
     }
 
       @Override
-    protected void Completed() {
-        super.Completed();
+    protected void completed() {
+        super.completed();
         inCrisisAgent.setLocation(safeLocation);
         System.out.println(inCrisisAgent.getIdNumber() +" has been rescued and brought to "+ safeLocation);
      }

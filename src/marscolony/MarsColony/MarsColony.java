@@ -137,8 +137,8 @@ public class MarsColony {
     {
         if(mission == null)
             return false;
-        if(mission.getState() == MissionState.COMPLETED || mission.getState() == MissionState.FAILED )//idk if needed 
-            return false;
+        if (mission.getState() != MissionState.PENDING)
+            throw new IllegalStateException("you can only accept a pending mission ");
         missions.add(mission);
         if (activeMission != null) {
             mission.fail(FailureReason.ANOTHER_ACTIVE_MISSION);

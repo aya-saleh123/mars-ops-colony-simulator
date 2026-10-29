@@ -26,7 +26,7 @@ public abstract class Mission {
     
     public abstract int getRequiredAmount(ResourceType type);
 
-    protected void Completed() {
+    protected void completed() {
         for(Agent agent : agents)
         {
             if(agent instanceof Human)
@@ -86,8 +86,10 @@ public abstract class Mission {
         state = MissionState.FAILED;
         reasonOfFailure = reason;
         releaseAgents();
-        MarsColony.activeMission = null;
         System.out.println("Mission is failed due to " + reason);
+        if (MarsColony.activeMission == this) {
+            MarsColony.activeMission = null;
+        }
     }
 
     public void setTarget(Facilities target) {
@@ -107,7 +109,7 @@ public abstract class Mission {
         {
             elapsed++;
             if (elapsed >= missionDuration) {
-                Completed();
+                completed();
                 System.out.println("Mission Completed Successfully");
             }
         }

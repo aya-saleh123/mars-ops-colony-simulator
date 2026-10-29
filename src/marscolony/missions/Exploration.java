@@ -162,7 +162,7 @@ public boolean checkRequiredForMission() {
     return true;
 }
     @Override
-    protected void Completed() {
+    protected void completed() {
       
         for(Agent a:getAgents()){
          if(a instanceof Human )
@@ -176,7 +176,7 @@ public boolean checkRequiredForMission() {
                 System.out.println("using exploration robot" + explorerAgent.getIdNumber());
                 }
        }
-         super.Completed();
+         super.completed();
      }
 
 

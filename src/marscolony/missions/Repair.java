@@ -33,7 +33,7 @@ public class Repair extends Mission {
     }
 
     @Override
-    protected void Completed() {
+    protected void completed() {
         if(facilityToRepair != null) //repair facility
        {
          facilityToRepair.repairFacility();
@@ -66,7 +66,7 @@ public class Repair extends Mission {
                 }
         }
        }
-         super.Completed();
+         super.completed();
      }
    /* @Override 
     public boolean checkRequiredForMission()
