@@ -5,9 +5,11 @@ import java.util.List;
 import marscolony.facilities.Facilities;
 import marscolony.missions.Capability;
 import marscolony.personnel.*;
+import marscolony.resources.ResourceType;
 import marscolony.MarsColony.MarsColony;
 import marscolony.missions.MissionState;
 import marscolony.missions.Exploration;
+import marscolony.missions.FailureReason;
 import marscolony.conditions.EnvironmentCondition;
 
 public class RoverBreakdown extends Emergency {
@@ -29,7 +31,10 @@ public class RoverBreakdown extends Emergency {
         System.out.println("Rover breakdown occurred during the exploration mission to " + FailedMission.getDestination());
         brokenRover.setOperational(false);
         brokenRover.setBatteryLevel(BatteryLevel.LOW);
-        FailedMission.setState(MissionState.FAILED);
+        FailedMission.fail(FailureReason.EQUIPMENT_FAILURE);
+        if (brokenRover.isAvailable()) {
+            brokenRover.setAvailable(false);
+        }
         brokenRover.setLocation("Martian Surface");
         System.out.println("The rover is now non-operational and located on the Martian surface. The exploration mission has failed.");
     }
@@ -82,7 +87,11 @@ public class RoverBreakdown extends Emergency {
     }
 
     public void roverRepaired() {
-        //to Yara: minus spare parts here and make sure to add validation for if you don't have enough spare parts
+        if (!MarsColony.deductResourceFromFacilities(ResourceType.SPARE_PARTS, 5)) {
+            System.out.println("Rover Breakdown Emergency is unresolved due to insufficient amount of spare parts.");
+            status = EmergencyStatus.UNRESOLVED;
+            return;
+        }
         for (Agent a : getResponders()) {
             a.setAvailable(true);
         }
