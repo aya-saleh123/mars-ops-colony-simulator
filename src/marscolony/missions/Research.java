@@ -15,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 public class Research extends Mission {
     
-     public Research(Facilities laboratory, int duration) {
+     public Research(int duration) {
         super("Research", duration);
-        setTarget(laboratory);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class Research extends Mission {
     
     }
 
-    
+
     @Override 
     public boolean checkRequiredForMission()
         {
@@ -59,7 +58,7 @@ public class Research extends Mission {
                     humanStatus = human.canPerform(Capability.SCIENCE); 
                     if(humanStatus)
                     {
-                        this.agents.add(human); // find a way to release if failed or succeeded
+                        this.assignAgent(human);
                         break;
                     }
                 }
@@ -79,6 +78,7 @@ public class Research extends Mission {
                 {
                     if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
                     {
+                        setTarget(facility);
                         labStatus = true;
                         break;
                     }

@@ -59,9 +59,7 @@ public abstract class Emergency {
 
     protected void dispatchResponder(Agent responder) {
         if (responder == null || !responder.isAvailable()) {
-            throw new IllegalArgumentException(
-                "Only an available responder can be dispatched."
-            );
+            throw new IllegalArgumentException("Only an available responder can be dispatched.");
         }
         addResponder(responder);
         responder.setAvailable(false);
@@ -70,11 +68,14 @@ public abstract class Emergency {
 
     protected void releaseResponders() {
         for (Agent responder : responders) {
-            responder.justFinished();
+            if (responder != null && !responder.isAvailable()) {
+                responder.justFinished();
+            }
         }
     }
 
     public abstract void respondToEmergency(); // respond to the emergency
+
     public abstract void findResponders(); // find responders for the emergency
 
 }

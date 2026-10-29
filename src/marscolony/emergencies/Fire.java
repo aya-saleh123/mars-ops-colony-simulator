@@ -26,11 +26,11 @@ public class Fire extends Emergency {
     private Firefighter firefighter;
     private MedicalOfficer medicalOfficer;
 
-    //delwa2ti e7na el fire fiha medical emergency
-    //fa t3ali b3d ma ta3meli el medical emergency
-    //erga3i w 7oti 7agat medical emergency hena
+    // delwa2ti e7na el fire fiha medical emergency
+    // fa t3ali b3d ma ta3meli el medical emergency
+    // erga3i w 7oti 7agat medical emergency hena
 
-    //dont forget to create subclass of habitat called hospital
+    // dont forget to create subclass of habitat called hospital
 
     public Fire(Laboratory lab, List<Human> patients) {
         super(lab);
@@ -92,34 +92,36 @@ public class Fire extends Emergency {
 
     @Override
     public void respondToEmergency() {
-        if (firefighter == null) {
+        if (firefighter == null || firefighter.isAvailable()) {
             setReason(FailureReason.UNAVAILABLE_PERSONNEL);
             setStatus(EmergencyStatus.UNRESOLVED);
             return;
         }
-
-        if (!patients.isEmpty() && medicalOfficer == null) {
-            setReason(FailureReason.UNAVAILABLE_PERSONNEL);
-            setStatus(EmergencyStatus.UNRESOLVED);
-            return;
-        }
-
-        firefighter.extinguishFire();
-        firefighter.justFinished();
 
         if (!patients.isEmpty()) {
+            if (medicalOfficer == null || medicalOfficer.isAvailable()) {
+                setReason(FailureReason.UNAVAILABLE_PERSONNEL);
+                setStatus(EmergencyStatus.UNRESOLVED);
+                return;
+            }
+
             if (medicalHabitat == null || medicalHabitat.getFacilityOperationalStatus() != FacilityStatus.OPERATIONAL) {
                 setReason(FailureReason.UNAVAILABLE_FACILITIES);
                 setStatus(EmergencyStatus.UNRESOLVED);
                 return;
             }
-            else if (medicalHabitat.getResourceCount(ResourceType.MEDICAL_SUPPLIES) < patients.size()) {
+
+            if (medicalHabitat.getResourceCount(ResourceType.MEDICAL_SUPPLIES) < patients.size()) {
                 setReason(FailureReason.INSUFFICIENT_RESOURCES);
                 setStatus(EmergencyStatus.UNRESOLVED);
                 return;
             }
+        }
 
-            medicalHabitat.removeResource(ResourceType.MEDICAL_SUPPLIES,patients.size());
+        firefighter.extinguishFire();
+
+        if (!patients.isEmpty()) {
+            medicalHabitat.removeResource(ResourceType.MEDICAL_SUPPLIES, patients.size());
 
             for (Human patient : patients) {
                 patient.decFatigueLevel();
@@ -127,11 +129,12 @@ public class Fire extends Emergency {
             }
         }
 
-        medicalOfficer.justFinished();
         getFacility().setOperationalStatus(FacilityStatus.DESTROYED);
         setStatus(EmergencyStatus.RESOLVED);
         setReason(FailureReason.NONE);
-        System.out.println("Fire emergency resolved at " + getLocation() + "But the facility is destroyed and is in need of repair.");
+
+        System.out.println("Fire emergency resolved at " + getLocation() + ". The facility is destroyed and needs repair.");
+
         releaseResponders();
     }
 

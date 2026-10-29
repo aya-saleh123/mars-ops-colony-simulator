@@ -13,10 +13,12 @@ import java.util.Map;
 
 public class MarsColony {
     // Related to stimulation part
+
+    //why the fuck is everything private!
     private static int colonyTime = 0;
-    private static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
-    private static List<Mission> missions;
-    private static Mission activeMission = null;
+    public static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
+    private static List<Mission> missions = new ArrayList<>();
+    public static Mission activeMission = null;
 
     private static List<Facilities> facilities = new ArrayList<>();
     private static List<Human> crewMembers = new ArrayList<>();
@@ -158,6 +160,7 @@ public class MarsColony {
                     return false;
                 }
 
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
 
@@ -176,6 +179,7 @@ public class MarsColony {
                     return false;
                 }
 
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Rescue) {
@@ -191,17 +195,26 @@ public class MarsColony {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
+
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             } else if (mission instanceof Exploration) {
                 if (mission.getRequiredAmount(ResourceType.FUEL) > getTotalResourceCount(ResourceType.FUEL)) {
-                    mission.fail(FailureReason.INSUFFICIENT_BATTERIES);
+                    mission.fail(FailureReason.INSUFFICIENT_RESOURCES);
+                    return false;
+                }
+                if(currentCondition == EnvironmentCondition.DUST_STORM )
+                {
+                    mission.fail(FailureReason.ENVIRONMENTAL_CONDITIONS);
                     return false;
                 }
                 if (!((Exploration) mission).checkRequiredForMission()) {
                     mission.fail(FailureReason.UNAVAILABLE_PERSONNEL);
                     return false;
                 }
+
+                mission.acceptMission();
                 activeMission = mission;
                 return true;
             }

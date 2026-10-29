@@ -64,7 +64,7 @@ public class Rescue extends Mission{
                 humanStatus = human.canPerform(Capability.FIREFIGHTING); 
                 if(humanStatus)
                 {
-                    this.agents.add(human);
+                    this.assignAgent(human);
                     break;
                 }
             }
@@ -76,7 +76,7 @@ public class Rescue extends Mission{
                 robotStatus = robot.canPerform(Capability.AERIAL);
                 if(robotStatus)
                 {
-                    this.agents.add(robot);
+                    this.assignAgent(robot);
                     break;
                 }
             }

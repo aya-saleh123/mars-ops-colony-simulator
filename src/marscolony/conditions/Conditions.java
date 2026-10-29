@@ -1,47 +1,49 @@
 package marscolony.conditions;
 import java.util.ArrayList;
 import java.util.List;
-import marscolony.missions.*;
-import marscolony.personnel.*;
+
+import marscolony.MarsColony.MarsColony;
+import marscolony.missions.FailureReason;
+import marscolony.missions.Mission;
+import marscolony.missions.MissionState;
+import marscolony.personnel.RoboticUnit;
 
 public class Conditions {
 
-  private EnvironmentCondition condition;
-  private List<Mission> missions = new ArrayList<>();
-  private List<RoboticUnit> robots = new ArrayList<>();
+    private EnvironmentCondition condition;
+    private List<Mission> missions = new ArrayList<>();
+    private List<RoboticUnit> robots = new ArrayList<>();
 
-  public Conditions(EnvironmentCondition condition, List<Mission> missions, List<RoboticUnit> robots) {
-    this.condition = condition;
-    this.missions = missions;
-    this.robots = robots;
+    public Conditions(EnvironmentCondition condition,List<Mission> missions,List<RoboticUnit> robots) {
 
-  }
+        if (condition == null) {
+            throw new IllegalArgumentException("Environmental condition cannot be null.");
+        }
 
-  public EnvironmentCondition getCondition() {
-    return condition;
-  }
+        this.condition = condition;
 
-  public void setConsequencesToEnvCond() {
-    for (Mission m : missions) {
-      if (condition == EnvironmentCondition.DUST_STORM) {
-        m.getEnvironmentProblem(EnvironmentCondition.DUST_STORM);
+        if (missions != null) {
+            this.missions = missions;
+        }
 
-      }
-      if (condition == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
-        m.getEnvironmentProblem(EnvironmentCondition.COMMUNICATION_DISRUPTION);
-
-      }
-
-    }
-    for (RoboticUnit r : robots) {
-      if (condition == EnvironmentCondition.DUST_STORM) {
-        r.assignMission(EnvironmentCondition.DUST_STORM);
-      }
-      if (condition == EnvironmentCondition.COMMUNICATION_DISRUPTION) {
-        r.assignMission(EnvironmentCondition.COMMUNICATION_DISRUPTION);
-      }
+        if (robots != null) {
+            this.robots = robots;
+        }
     }
 
-  }
+    public EnvironmentCondition getCondition() {
+        return condition;
+    }
 
+    public void worsenEnviromentCondition(EnvironmentCondition envCondition) {
+          MarsColony.currentCondition = envCondition;
+          if (MarsColony.activeMission == null) {
+            return;
+          } 
+          
+    }
+
+    public void resetEnvironmentCondition() {
+
+    }
 }

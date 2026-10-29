@@ -33,7 +33,6 @@ public class OxygenLeak extends Emergency {
 
         for (Agent agent : MarsColony.getHumans()) {
             if (agent.canPerform(Capability.REPAIR)) {
-                this.addResponder(agent);
                 engineer = (Engineer) agent;
                 break;
             }
@@ -41,7 +40,6 @@ public class OxygenLeak extends Emergency {
 
         for (Agent agent : MarsColony.getRobots()) {
             if (agent.canPerform(Capability.REPAIR)) {
-                this.addResponder(agent);
                 repairRobot = (RepairRobot) agent;
                 break;
             }
