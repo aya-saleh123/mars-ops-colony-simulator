@@ -52,7 +52,7 @@ public class Conditions {
     }
   }
 
-  private boolean isAffectedByCondition(Mission mission,EnvironmentCondition envCondition) {
+  private static boolean isAffectedByCondition(Mission mission,EnvironmentCondition envCondition) {
 
     switch (envCondition) {
 
