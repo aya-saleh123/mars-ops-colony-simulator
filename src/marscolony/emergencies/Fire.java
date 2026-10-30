@@ -8,12 +8,14 @@ import marscolony.Equipment.Equipment;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
 import marscolony.facilities.Habitat;
+import marscolony.facilities.Hospital;
 import marscolony.facilities.Laboratory;
 import marscolony.missions.Capability;
 import marscolony.missions.FailureReason;
 import marscolony.personnel.Agent;
 import marscolony.personnel.FatigueLevel;
 import marscolony.personnel.Firefighter;
+import marscolony.personnel.HealthStatus;
 import marscolony.personnel.Human;
 import marscolony.personnel.MedicalOfficer;
 import marscolony.resources.ResourceType;
@@ -22,7 +24,7 @@ public class Fire extends Emergency {
     private static final int OXYGEN_LOSS = 50;
 
     private final List<Human> patients = new ArrayList<>();
-    private final Habitat medicalHabitat;
+    private final Hospital medicalHabitat;
     private Firefighter firefighter;
     private MedicalOfficer medicalOfficer;
 
@@ -32,12 +34,20 @@ public class Fire extends Emergency {
 
     // dont forget to create subclass of habitat called hospital
 
-    public Fire(Laboratory lab, List<Human> patients) {
+    public Fire(Laboratory lab) {
         super(lab);
-        if (patients != null) {
-            this.patients.addAll(patients);
+        if (lab.getFacilityHumanAgents() != null) {
+            for (Human human : lab.getFacilityHumanAgents())
+            {
+                if(lab.currentlyPresentAtTheFacility(human))
+                {
+                    patients.add(human);
+                    human.worsenHealth();
+
+                }
+            }
         }
-        this.medicalHabitat = findOperationalHabitat();
+        this.medicalHabitat = findOperationalHospital();
         lab.setOperationalStatus(FacilityStatus.UNAVAILABLE);
         int lost = lab.removeUpTo(ResourceType.OXYGEN, OXYGEN_LOSS);
         System.out.println("Fire consumed " + lost + " oxygen in " + lab.getLocationName());
@@ -124,9 +134,10 @@ public class Fire extends Emergency {
             medicalHabitat.removeResource(ResourceType.MEDICAL_SUPPLIES, patients.size());
 
             for (Human patient : patients) {
-                patient.decFatigueLevel();
-                medicalOfficer.medicalAssist(patient);
-            }
+                medicalOfficer.incHealthStat(patient);
+                getFacility().removeHumanAgentFromFacility(patient);
+                medicalHabitat.addHumanAgentTofacility(patient);
+}
         }
 
         getFacility().setOperationalStatus(FacilityStatus.DESTROYED);
@@ -138,14 +149,17 @@ public class Fire extends Emergency {
         releaseResponders();
     }
 
-    private Habitat findOperationalHabitat() {
-        for (Facilities facility : MarsColony.getFacilities()) {
-            if (facility instanceof Habitat && facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL) {
-                return (Habitat) facility;
-            }
+    private Hospital findOperationalHospital() {
+    for (Facilities facility : MarsColony.getFacilities()) {
+        if (facility instanceof Hospital
+                && facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL) {
+
+            return (Hospital) facility;
         }
-        return null;
     }
+
+    return null;
+}
 
     private void damageEquipment(Laboratory lab) {
         for (Equipment equipment : lab.getEquipments()) {

@@ -17,8 +17,8 @@ public abstract class Facilities {
     private List<Resource> resources;
     //list of equipement
     private List<Equipment> equipments;
-    private List<Human> facilityHumanAgents;
-    private List<RoboticUnit> facilityRoboticAgents;
+    private final List<Human> facilityHumanAgents = new ArrayList<>();
+    private final List<RoboticUnit> facilityRoboticAgents = new ArrayList<>();
 
 
     public Facilities(
@@ -156,6 +156,62 @@ public int removeUpTo(ResourceType type, int amount) {
     removeResource(type, removed);
     return removed;
 }
+
+
+public void addHumanAgentTofacility(Human human) {
+
+    if (human == null) {
+        throw new IllegalArgumentException("Human cannot be null");
+    }
+
+    if (operationalStatus != FacilityStatus.OPERATIONAL) {
+        throw new IllegalStateException(
+                "Cannot add people to a non-operational facility");
+    }
+
+    if (facilityHumanAgents.contains(human)) {
+        return;
+    }
+
+    facilityHumanAgents.add(human);
+    human.setLocation(locationName);
+}
+
+public void removeHumanAgentFromFacility(Human human) {
+    if (human == null) {
+        throw new IllegalArgumentException("Human cannot be null.");
+    }
+
+    if (!facilityHumanAgents.remove(human)) {
+        return;
+    }
+
+    human.setLocation("Base");
+}
+
+public void addRoboticAgentTofacility(RoboticUnit robot)
+{
+    if(robot != null){
+        facilityRoboticAgents.add(robot);
+        robot.setLocation(this.getLocationName());
+    }
+}
+
+public List<Human> getFacilityHumanAgents() {
+    return facilityHumanAgents;
+}
+
+public List<RoboticUnit> getFacilityRoboticAgents() {
+    return facilityRoboticAgents;
+}
+
+
+public boolean currentlyPresentAtTheFacility(Agent agent) {
+    return agent != null
+            && agent.getLocation() != null
+            && agent.getLocation().equals(this.locationName);
+}
+
 
 }
 

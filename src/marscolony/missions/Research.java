@@ -73,6 +73,7 @@ public class Research extends Mission {
        }
        for (Human human : MarsColony.getHumans()) {
            if (human.isAvailable()&& human.canPerform(Capability.SCIENCE)) {
+                this.researcher = human;
                assignAgent(human);
                break;
            }

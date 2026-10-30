@@ -173,7 +173,7 @@ public boolean checkRequiredForMission() {
          if(a instanceof RoboticUnit)
                 {
                 RoboticUnit explorerAgent=(RoboticUnit) a;
-                System.out.println("using exploration robot" + explorerAgent.getIdNumber());
+                System.out.println(" using exploration robot " + explorerAgent.getIdNumber());
                 }
        }
          super.completed();

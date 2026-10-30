@@ -46,7 +46,7 @@ public class Repair extends Mission {
          if(a instanceof RoboticUnit)
                 {
                 RoboticUnit repairAgent=(RoboticUnit) a;
-                System.out.println("with the help of repair robot" + repairAgent.getIdNumber());
+                System.out.println(" with the help of repair robot " + repairAgent.getIdNumber());
                 }
         }
        }

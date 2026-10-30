@@ -128,8 +128,11 @@ public class MarsColony {
                 if (activeMission != null) {
                     activeMission.advanceTime();
                 }
+                System.out.println("-----------------------------------------------");
+                System.out.println("Colony food and water resources decrease by 5 each every unit time");
                 deductResourceFromFacilities(ResourceType.FOOD,5);
                 deductResourceFromFacilities(ResourceType.WATER, 5);
+                System.out.println("-----------------------------------------------");
                 if(colonyTime % 3 == 0)
                 {
                     for (Facilities facility : facilities)
@@ -137,11 +140,16 @@ public class MarsColony {
                         facility.addResource(ResourceType.FOOD, 10);
                         facility.addResource(ResourceType.WATER, 10);
                     }
+                    System.out.println("10 units of water and food get added to each facility every 3 units of time");
+                    System.out.println("Resources have been added to facilities successfully");
+                    System.out.println("-----------------------------------------------");
+
+
                 }
                 if(colonyTime % 10 == 0)
                 {
                     currentCondition = EnvironmentCondition.values()[random.nextInt(EnvironmentCondition.values().length)];
-
+                    if(activeMission != null){
                     if(Conditions.isMissionAllowed(activeMission))
                     {
                         System.out.println("Curent Active Mission isn't affected by enviromental change");
@@ -150,6 +158,7 @@ public class MarsColony {
                     {
                         activeMission = null;
                     }
+                }
     
                 }
 
