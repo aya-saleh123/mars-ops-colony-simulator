@@ -12,7 +12,7 @@ import marscolony.personnel.RoboticUnit;
 
 public class Conditions {
 
-  private EnvironmentCondition condition;
+  private  static EnvironmentCondition condition;
 
   public Conditions(EnvironmentCondition condition,List<Mission> missions,List<RoboticUnit> robots) {
 
@@ -70,7 +70,7 @@ public class Conditions {
     }
   }
 
-  public boolean isMissionAllowed(Mission mission) {
+  public static boolean isMissionAllowed(Mission mission) {
 
     if (mission == null) {
       throw new IllegalArgumentException("Mission cannot be null.");

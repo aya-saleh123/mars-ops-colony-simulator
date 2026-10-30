@@ -1,6 +1,7 @@
 package marscolony.MarsColony;
 
 import marscolony.Equipment.Equipment;
+import marscolony.conditions.Conditions;
 import marscolony.conditions.EnvironmentCondition;
 import marscolony.facilities.Facilities;
 import marscolony.facilities.FacilityStatus;
@@ -8,12 +9,14 @@ import marscolony.resources.*;
 import marscolony.personnel.*;
 import marscolony.missions.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.List;
 
 public class MarsColony {
+    static Random random = new Random();
     // Related to stimulation part
-    
     private static int colonyTime = 0;
+
     public static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
     private static List<Mission> missions = new ArrayList<>();
     public static Mission activeMission = null;
@@ -115,6 +118,7 @@ public class MarsColony {
         }
     }
 
+
     public static void advanceTime(int time) {
         if (time <= 0)
             throw new IllegalArgumentException("Time must be positive");
@@ -123,14 +127,38 @@ public class MarsColony {
                 colonyTime++;
                 if (activeMission != null) {
                     activeMission.advanceTime();
-                    if (activeMission.getState() == MissionState.COMPLETED) {
-                        activeMission = null;
+                }
+                deductResourceFromFacilities(ResourceType.FOOD,5);
+                deductResourceFromFacilities(ResourceType.WATER, 5);
+                if(colonyTime % 3 == 0)
+                {
+                    for (Facilities facility : facilities)
+                    {
+                        facility.addResource(ResourceType.FOOD, 10);
+                        facility.addResource(ResourceType.WATER, 10);
                     }
                 }
+                if(colonyTime % 10 == 0)
+                {
+                    currentCondition = EnvironmentCondition.values()[random.nextInt(EnvironmentCondition.values().length)];
+
+                    if(Conditions.isMissionAllowed(activeMission))
+                    {
+                        System.out.println("Curent Active Mission isn't affected by enviromental change");
+                    }
+                    else
+                    {
+                        activeMission = null;
+                    }
+    
+                }
+
 
             }
         }
     }
+
+
 
     // handling on mission at a time
     public boolean startMission(Mission mission) 
