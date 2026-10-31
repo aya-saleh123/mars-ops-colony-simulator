@@ -134,7 +134,7 @@ public class Fire extends Emergency {
             medicalHabitat.removeResource(ResourceType.MEDICAL_SUPPLIES, patients.size());
 
             for (Human patient : patients) {
-                medicalOfficer.incHealthStat(patient);
+                medicalOfficer.medicalAssist(patient);
                 getFacility().removeHumanAgentFromFacility(patient);
                 medicalHabitat.addHumanAgentTofacility(patient);
 }
