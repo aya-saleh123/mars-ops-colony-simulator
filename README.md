@@ -227,10 +227,10 @@ The test runner reports the number of passed and failed tests.
 
 ## Contributors
 
-Aya Saleh
-Yara Sameh
-Mariam El-Habashy
-Toka Hassan
+- Aya Saleh
+- Yara Sameh
+- Mariam El-Habashy
+- Toka Hassan
 
 Developed collaboratively as a Java Object-Oriented Programming project.
 
