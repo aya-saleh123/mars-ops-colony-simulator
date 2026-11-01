@@ -17,13 +17,15 @@ public class ExplorationRover extends RoboticUnit {
     
     @Override
     public void assignMission(EnvironmentCondition condition) {
-        if(isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
-            System.out.println("Assigning exploration mission to Exploration Rover " + getIdNumber());
-            setAvailable(false);
-        } else if (condition == EnvironmentCondition.DUST_STORM) {
+         if (condition == EnvironmentCondition.DUST_STORM) {
             System.out.println("Exploration Rover " + getIdNumber() + 
             " is currently unavailable for missions due to a dust storm.");
-        } else {
+        } 
+       else  if(isAvailable() && getBatteryLevel() != BatteryLevel.LOW) {
+            System.out.println("Assigning exploration mission to Exploration Rover " + getIdNumber());
+            setAvailable(false);  }
+
+            else {
             System.out.println("Exploration Rover " + getIdNumber() + " is currently unavailable for missions.");
         }
     }

@@ -17,6 +17,7 @@ public abstract class Mission {
 
     public Mission(String name, int missionDuration) {
         this.missionDuration = missionDuration;
+
         this.state = MissionState.PENDING;
         this.elapsed = 0;
         this.agents = new ArrayList<>();
