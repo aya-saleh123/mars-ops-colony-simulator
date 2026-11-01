@@ -18,7 +18,6 @@ public class Repair extends Mission {
     public Repair(String name,int missionDuration,Equipment equipmentToRepair) {
         super(name, missionDuration);
         this.equipmentToRepair = equipmentToRepair;
-        setTarget(null);
     }
 
     
