@@ -134,7 +134,7 @@ src/
     │   ├── Resource.java
     │   └── ResourceType.java
     │
-    └── FireEmergencyTests.java
+    └── Main.java
 ```
 
 ## Object-Oriented Design
