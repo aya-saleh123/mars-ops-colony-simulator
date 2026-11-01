@@ -169,6 +169,16 @@ Polymorphism allows the system to handle different agents, missions, facilities,
 - **Version Control:** Git & GitHub
 - **Java Development Tools:** JDK and Java Compiler
 
+## The UML diagram links
+
+- **Usecase Diagram:** https://tinyurl.com/53a5tcej
+- **Sequence Diagram 1:** https://tinyurl.com/4t3zdsxt
+- **Sequence Diagram 2:** https://tinyurl.com/57ay3m92
+- **Sequence Diagram 3:** https://tinyurl.com/2x9e58jh
+- **Object Diagram:** https://tinyurl.com/cp5khdnc
+- **Class Diagram:** https://tinyurl.com/v83awr79
+- **State Machine Diagram:** https://tinyurl.com/48488b7y
+
 ## Getting Started
 
 ### Prerequisites
