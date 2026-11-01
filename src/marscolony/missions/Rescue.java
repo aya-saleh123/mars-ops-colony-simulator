@@ -42,38 +42,6 @@ public class Rescue extends Mission{
      }
 
 
-    /* @Override 
-     public boolean checkRequiredForMission()
-    {
-        boolean humanStatus = false , robotStatus = false ;
-        for(Human human : MarsColony.getHumans())
-        {
-                humanStatus = human.canPerform(Capability.FIREFIGHTING); 
-                if(humanStatus)
-                {
-                    this.assignAgent(human);
-                    break;
-                }
-        }
-        for(RoboticUnit robot : MarsColony.getRobots() )
-        {
-                robotStatus = robot.canPerform(Capability.AERIAL);
-                if(robotStatus)
-                {
-                    this.assignAgent(robot);
-                    break;
-                }
-        }
-        if(humanStatus && robotStatus){
-            return true;
-        }
-        else
-        {
-            releaseAgents();
-            return false;
-        }
-    }*/
-
     private void setSafeLocation()
     {
         int flag =0;

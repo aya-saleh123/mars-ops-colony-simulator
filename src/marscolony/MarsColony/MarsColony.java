@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MarsColony {
     static Random random = new Random();
-    // Related to stimulation part
+
     private static int colonyTime = 0;
 
     public static EnvironmentCondition currentCondition = EnvironmentCondition.NORMAL;
@@ -60,7 +60,7 @@ public class MarsColony {
         facilities.add(facility);
     }
 
-    // we need to exclude destroyed and unavailable facilities
+   
     public static int getTotalResourceCount(ResourceType resource) {
         int sum = 0;
         for (Facilities facility : facilities) {
@@ -169,7 +169,7 @@ public class MarsColony {
 
 
 
-    // handling on mission at a time
+    
     public boolean startMission(Mission mission) 
     {
         if(mission == null)

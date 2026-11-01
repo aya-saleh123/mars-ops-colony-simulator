@@ -47,7 +47,7 @@ public abstract class Emergency {
         this.status = status;
     }
 
-    public String getLocation() { // get the location of the emergency
+    public String getLocation() { 
         return facility.getLocationName();
     }
 
@@ -74,8 +74,8 @@ public abstract class Emergency {
         }
     }
 
-    public abstract void respondToEmergency(); // respond to the emergency
+    public abstract void respondToEmergency(); 
 
-    public abstract void findResponders(); // find responders for the emergency
+    public abstract void findResponders(); 
 
 }

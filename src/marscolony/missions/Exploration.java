@@ -34,46 +34,7 @@ public class Exploration extends Mission {
         return destination;
     }
 
-    /*@Override 
-    public boolean checkRequiredForMission()
-    {
-        boolean robotStatus = false , equipmentStatus = false ,humanStatus = false;
-
-        for (Human human : MarsColony.getHumans()) {
-                humanStatus = human.canPerform(Capability.SCIENCE); 
-                if(humanStatus)
-                {
-                    this.assignAgent(human);
-                    break;
-                }
-            }
-
-        for(RoboticUnit robot : MarsColony.getRobots())
-        {
-                robotStatus = robot.canPerform(Capability.SURFACE_TRAVEL); 
-                if(robotStatus)
-                {
-                    this.assignAgent(robot);
-                    break;
-                } 
-        }
-        for(Equipment equipment : MarsColony.getEquipments() )
-        {
-            if( equipment.getType() == EquipmentType.EXPLORATION_EQUIPMENT && equipment.isOperationalStatus())
-            {
-                equipmentStatus = true;
-                break;
-            }
-        }
-        if(robotStatus && equipmentStatus && humanStatus){
-            return true;
-        }
-        else
-        {
-            releaseAgents();
-            return false;
-        }
-    }*/
+   
    @Override 
    public FailureReason getMissionFailureReason() {
     if (MarsColony.getEnvCondition() == EnvironmentCondition.DUST_STORM) {

@@ -34,7 +34,7 @@ public class Repair extends Mission {
 
     @Override
     protected void completed() {
-        if(facilityToRepair != null) //repair facility
+        if(facilityToRepair != null) 
        {
          facilityToRepair.repairFacility();
         for(Agent a:getAgents()){
@@ -68,38 +68,7 @@ public class Repair extends Mission {
        }
          super.completed();
      }
-   /* @Override 
-    public boolean checkRequiredForMission()
-    {
-        boolean humanStatus = false , robotStatus = false ;
-        for(Human human : MarsColony.getHumans())
-        {
-            humanStatus = human.canPerform(Capability.REPAIR); 
-            if(humanStatus)
-            {
-                this.assignAgent(human);
-                break;
-            }
-        }
-        for(RoboticUnit robot : MarsColony.getRobots() )
-        {
-            
-            robotStatus = robot.canPerform(Capability.REPAIR);
-            if(robotStatus)
-            {
-                this.assignAgent(robot);
-                break;
-            }
-        }
-        if(humanStatus && robotStatus){
-            return true;
-        }
-        else
-        {
-            releaseAgents();
-            return false;
-        }
-    }*/
+   
    @Override 
    public FailureReason getMissionFailureReason() {
     boolean availableHumanExists = false;

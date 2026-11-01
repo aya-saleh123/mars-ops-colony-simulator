@@ -21,51 +21,7 @@ public class Research extends Mission {
     }
 
 
-   /*  @Override 
-    public boolean checkRequiredForMission()
-        {
-            boolean humanStatus = false , equipmentStatus = false ,labStatus = false  ;
-            for(Human human : MarsColony.getHumans())
-            {
-                    humanStatus = human.canPerform(Capability.SCIENCE); 
-                    if(humanStatus)
-                    {
-                        this.assignAgent(human);
-                        this.researcher = human;
-                        break;
-                    }
-                   
-            }
-            for(Equipment equipment : MarsColony.getEquipments() )
-            {
-                if( equipment.getType() == EquipmentType.SCIENTIFIC_EQUIPMENT && equipment.isOperationalStatus())
-                {
-                    equipmentStatus = true;
-                }
-            }
 
-            for(Facilities facility : MarsColony.getFacilities())
-            {
-                if(facility instanceof Laboratory)
-                {
-                    if(facility.getFacilityOperationalStatus() == FacilityStatus.OPERATIONAL)
-                    {
-                        setTarget(facility);
-                        labStatus = true;
-                        break;
-                    }
-                }
-            }
-            
-            if(humanStatus && equipmentStatus && labStatus){
-                return true;
-            }
-            else
-            {
-                releaseAgents();
-                return false;
-            }
-        }*/
    @Override
    public boolean checkRequiredForMission() {
        if (getMissionFailureReason() != FailureReason.NONE) {

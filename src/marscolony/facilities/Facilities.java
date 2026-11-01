@@ -13,9 +13,9 @@ public abstract class Facilities {
     private String locationName;
     private int capacity;
     private FacilityStatus operationalStatus;
-    // list of all resources
+    
     private List<Resource> resources;
-    //list of equipement
+  
     private List<Equipment> equipments;
     private final List<Human> facilityHumanAgents = new ArrayList<>();
     private final List<RoboticUnit> facilityRoboticAgents = new ArrayList<>();
@@ -150,7 +150,7 @@ public void repairFacility()
         operationalStatus = FacilityStatus.OPERATIONAL;
 }
 
-// Removes up to 'amount' and returns how much was actually removed.
+
 public int removeUpTo(ResourceType type, int amount) {
     int removed = Math.min(amount, getResourceCount(type));
     removeResource(type, removed);
